@@ -81,13 +81,15 @@
     async function removeBackground() {
       if (!imageBitmap) return alert('Please upload an image first.');
 
-      const modelURL = 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2netp.onnx';
+      const modelURL = 'https://huggingface.co/akhaliq/u2netp/resolve/main/u2netp.onnx';
       const session = await ort.InferenceSession.create(modelURL);
 
       const width = imageBitmap.width;
       const height = imageBitmap.height;
 
-      const tempCanvas = new OffscreenCanvas(320, 320);
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = 320;
+      tempCanvas.height = 320;
       const tempCtx = tempCanvas.getContext('2d');
       tempCtx.drawImage(imageBitmap, 0, 0, 320, 320);
       const resizedData = tempCtx.getImageData(0, 0, 320, 320);
@@ -98,7 +100,9 @@
       const output = results[Object.keys(results)[0]].data;
 
       const mask = new Float32Array(output);
-      const maskCanvas = new OffscreenCanvas(320, 320);
+      const maskCanvas = document.createElement('canvas');
+      maskCanvas.width = 320;
+      maskCanvas.height = 320;
       const maskCtx = maskCanvas.getContext('2d');
       const maskImageData = maskCtx.createImageData(320, 320);
 
@@ -111,12 +115,16 @@
       }
       maskCtx.putImageData(maskImageData, 0, 0);
 
-      const finalMaskCanvas = new OffscreenCanvas(width, height);
+      const finalMaskCanvas = document.createElement('canvas');
+      finalMaskCanvas.width = width;
+      finalMaskCanvas.height = height;
       const finalMaskCtx = finalMaskCanvas.getContext('2d');
       finalMaskCtx.drawImage(maskCanvas, 0, 0, width, height);
       const finalMaskData = finalMaskCtx.getImageData(0, 0, width, height);
 
-      const offCanvas = new OffscreenCanvas(width, height);
+      const offCanvas = document.createElement('canvas');
+      offCanvas.width = width;
+      offCanvas.height = height;
       const offCtx = offCanvas.getContext('2d');
       offCtx.drawImage(imageBitmap, 0, 0);
       const imgData = offCtx.getImageData(0, 0, width, height);
@@ -164,3 +172,4 @@
   </script>
 </body>
 </html>
+
