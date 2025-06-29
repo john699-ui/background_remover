@@ -81,7 +81,7 @@
     async function removeBackground() {
       if (!imageBitmap) return alert('Please upload an image first.');
 
-      const modelURL = 'https://huggingface.co/akhaliq/u2netp/resolve/main/u2netp.onnx';
+      const modelURL = 'https://john699-ui.github.io/background_remover/u2netp.onnx';
       const session = await ort.InferenceSession.create(modelURL);
 
       const width = imageBitmap.width;
