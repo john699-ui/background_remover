@@ -82,7 +82,8 @@
       if (!imageBitmap) return alert('Please upload an image first.');
 
       
-      const modelURL = 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2netp.onnx';
+      const modelURL = 'https://raw.githubusercontent.com/john699-ui/background_remover/main/u2netp.onnx';
+      //const modelURL = 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2netp.onnx';
       const session = await ort.InferenceSession.create(modelURL);
 
       const width = imageBitmap.width;
