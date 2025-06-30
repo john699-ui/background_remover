@@ -105,7 +105,7 @@
       const resizedData = tempCtx.getImageData(0, 0, 320, 320);
 
       const inputTensor = preprocess(resizedData);
-      const feeds = { input: inputTensor };
+      const feeds = { 'input.1': inputTensor };
       const results = await session.run(feeds);
       const output = results[Object.keys(results)[0]].data;
 
