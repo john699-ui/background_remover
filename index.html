@@ -25,15 +25,22 @@
     .controls {
       margin: 20px 0;
     }
-    input[type="color"] {
+    input[type="color"], select {
       margin-left: 10px;
+      padding: 5px;
     }
-    #downloadBtn {
+    #downloadBtn, #removeBtn {
       background: #4CAF50;
       color: white;
       border: none;
       padding: 10px 20px;
       cursor: pointer;
+      margin-left: 10px;
+    }
+    #progress {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
     }
   </style>
 </head>
@@ -44,13 +51,19 @@
   <div class="controls">
     Background Fill Color:
     <input type="color" id="bgColor" value="#ffffff">
+    <label for="modelSelect">Model:</label>
+    <select id="modelSelect">
+      <option value="u2netp">Fast (u2netp - Low Accuracy)</option>
+      <option value="u2net">High Quality (u2net - Best Accuracy)</option>
+    </select>
     <button id="removeBtn">Remove Background</button>
     <button id="downloadBtn">Download PNG</button>
+    <div id="progress"></div>
   </div>
   <canvas id="canvas"></canvas>
+
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
   <script>
-    console.log("✅ Main script is running");
     const dropzone = document.getElementById('dropzone');
     const fileInput = document.getElementById('fileInput');
     const canvas = document.getElementById('canvas');
@@ -58,6 +71,9 @@
     const removeBtn = document.getElementById('removeBtn');
     const downloadBtn = document.getElementById('downloadBtn');
     const bgColorInput = document.getElementById('bgColor');
+    const modelSelect = document.getElementById('modelSelect');
+    const progress = document.getElementById('progress');
+
     let imageBitmap = null;
 
     dropzone.addEventListener('click', () => fileInput.click());
@@ -82,17 +98,15 @@
     async function removeBackground() {
       if (!imageBitmap) return alert('Please upload an image first.');
 
-      const modelURL = 'https://john699-ui.github.io/background_remover/u2netp.onnx';
-      console.log("Loading model from:", modelURL);
-      let session;
-      try {
-        session = await ort.InferenceSession.create(modelURL);
-        console.log("Model loaded successfully.");
-      } catch (err) {
-        console.error("Model load failed:", err);
-        alert("Model failed to load.");
-        return;
-      }
+      const selectedModel = modelSelect.value;
+      const modelURL = selectedModel === 'u2net' 
+        ? 'https://huggingface.co/akhaliq/u2net/resolve/main/u2net.onnx'
+        : 'https://huggingface.co/akhaliq/u2netp/resolve/main/u2netp.onnx';
+
+      progress.textContent = 'Loading model...';
+      const session = await ort.InferenceSession.create(modelURL);
+
+      progress.textContent = 'Processing image...';
 
       const width = imageBitmap.width;
       const height = imageBitmap.height;
@@ -105,7 +119,7 @@
       const resizedData = tempCtx.getImageData(0, 0, 320, 320);
 
       const inputTensor = preprocess(resizedData);
-      const feeds = { 'input.1': inputTensor };
+      const feeds = { input: inputTensor };
       const results = await session.run(feeds);
       const output = results[Object.keys(results)[0]].data;
 
@@ -144,13 +158,13 @@
       for (let i = 0; i < width * height; i++) {
         const alpha = finalMaskData.data[i * 4 + 3];
         for (let c = 0; c < 3; c++) {
-          outImage.data[i * 4 + c] =
-            alpha > 128 ? imgData.data[i * 4 + c] : bgColor[c];
+          outImage.data[i * 4 + c] = alpha > 128 ? imgData.data[i * 4 + c] : bgColor[c];
         }
         outImage.data[i * 4 + 3] = alpha;
       }
 
       ctx.putImageData(outImage, 0, 0);
+      progress.textContent = 'Done!';
     }
 
     function preprocess(imgData) {
@@ -182,4 +196,3 @@
   </script>
 </body>
 </html>
-
