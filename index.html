@@ -149,10 +149,10 @@
 
     removeBtn.onclick = async () => {
       if (!imageBitmap) return;
-      const modelURL = modelSelect.value === 'u2net'
-        ? 'https://your-host/u2net.onnx'
-        : 'https://your-host/u2netp.onnx';
-
+      //const modelURL = modelSelect.value === 'u2net'
+      //  ? 'https://your-host/u2net.onnx'
+      //  : 'https://your-host/u2netp.onnx';
+      const modelURL = 'https://john699-ui/background_remover/u2netp.onnx';
       progress.textContent = 'Loading model...';
       session = await ort.InferenceSession.create(modelURL);
       progress.textContent = 'Running model...';
