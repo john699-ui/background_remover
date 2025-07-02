@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Background Remover</title>
   <style>
     body {
@@ -30,13 +30,13 @@
       margin-left: 10px;
       padding: 5px;
     }
-    #downloadBtn, #removeBtn, #undoPointBtn, #applyEraseBtn {
+    button {
       background: #4CAF50;
       color: white;
       border: none;
       padding: 10px 20px;
+      margin: 5px;
       cursor: pointer;
-      margin-left: 10px;
     }
     #progress {
       margin-top: 10px;
@@ -49,22 +49,24 @@
   <h2>AI Background Remover</h2>
   <div class="dropzone" id="dropzone">Drag & Drop Image or Click to Upload</div>
   <input type="file" id="fileInput" accept="image/*" style="display:none">
+
   <div class="controls">
-    Background Fill Color:
-    <input type="color" id="bgColor" value="#ffffff">
+    Background Fill Color: <input type="color" id="bgColor" value="#ffffff">
     <label for="modelSelect">Model:</label>
     <select id="modelSelect">
-      <option value="u2netp">Fast (u2netp - Low Accuracy)</option>
-      <option value="u2net">High Quality (u2net - Best Accuracy)</option>
+      <option value="u2netp">Fast (u2netp)</option>
+      <option value="u2net">High Quality (u2net)</option>
     </select>
     <button id="removeBtn">Remove Background</button>
     <button id="downloadBtn">Download PNG</button>
     <div id="progress"></div>
   </div>
+
   <div class="controls" id="polygonControls">
     <button id="undoPointBtn">Undo Last Point</button>
     <button id="applyEraseBtn">Apply Erase Mask</button>
   </div>
+
   <canvas id="canvas"></canvas>
 
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
@@ -78,13 +80,14 @@
     const bgColorInput = document.getElementById('bgColor');
     const modelSelect = document.getElementById('modelSelect');
     const progress = document.getElementById('progress');
-    const polygonControls = document.getElementById('polygonControls');
     const undoPointBtn = document.getElementById('undoPointBtn');
     const applyEraseBtn = document.getElementById('applyEraseBtn');
+    const polygonControls = document.getElementById('polygonControls');
 
     let imageBitmap = null;
     let polygonPoints = [];
     let drawingPolygon = false;
+    let session = null;
 
     dropzone.addEventListener('click', () => fileInput.click());
     dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.style.background = '#eef'; });
@@ -144,7 +147,33 @@
       drawPolygon();
     };
 
+    removeBtn.onclick = async () => {
+      if (!imageBitmap) return;
+      const modelURL = modelSelect.value === 'u2net'
+        ? 'https://your-host/u2net.onnx'
+        : 'https://your-host/u2netp.onnx';
+
+      progress.textContent = 'Loading model...';
+      session = await ort.InferenceSession.create(modelURL);
+      progress.textContent = 'Running model...';
+
+      // NOTE: actual preprocessing and postprocessing logic not included here
+      // This is a placeholder to indicate inference runs
+
+      setTimeout(() => {
+        progress.textContent = 'Background removed (simulated)';
+      }, 1000);
+    };
+
+    downloadBtn.onclick = () => {
+      const link = document.createElement('a');
+      link.download = 'bg_removed.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    };
+
     function drawPolygon() {
+      if (!imageBitmap) return;
       ctx.drawImage(imageBitmap, 0, 0);
       if (polygonPoints.length === 0) return;
       ctx.strokeStyle = 'red';
@@ -172,15 +201,8 @@
       drawingPolygon = true;
       polygonControls.style.display = 'block';
     }
-
-    removeBtn.onclick = () => alert('Run AI remove first');
-    downloadBtn.onclick = () => {
-      const link = document.createElement('a');
-      link.download = 'bg_removed.png';
-      link.href = canvas.toDataURL();
-      link.click();
-    };
   </script>
 </body>
 </html>
+
 
