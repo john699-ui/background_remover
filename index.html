@@ -99,9 +99,10 @@
       if (!imageBitmap) return alert('Please upload an image first.');
 
       const selectedModel = modelSelect.value;
-      const modelURL = selectedModel === 'u2net'
-        ? 'https://huggingface.co/frankminors123/U2Net_ONNX/resolve/main/u2net.onnx'
-        : 'https://john699-ui.github.io/background_remover/u2netp.onnx';
+      //const modelURL = selectedModel === 'u2net'
+      //  ? 'https://huggingface.co/frankminors123/U2Net_ONNX/resolve/main/u2net.onnx'
+     //   : 'https://john699-ui.github.io/background_remover/u2netp.onnx';
+      const modelURL = 'https://john699-ui.github.io/background_remover/u2netp.onnx';
 
       progress.textContent = 'Loading model...';
       const session = await ort.InferenceSession.create(modelURL);
