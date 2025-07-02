@@ -100,8 +100,8 @@
 
       const selectedModel = modelSelect.value;
       const modelURL = selectedModel === 'u2net'
-        ? 'https://raw.githubusercontent.com/xahidbuffon/models/main/u2net.onnx'
-        : 'https://raw.githubusercontent.com/xahidbuffon/models/main/u2netp.onnx';
+        ? 'https://huggingface.co/frankminors123/U2Net_ONNX/raw/main/u2net.onnx'
+        : 'https://huggingface.co/frankminors123/U2Net_Portrait_ONNX/raw/main/u2net_portrait.onnx';
 
       progress.textContent = 'Loading model...';
       const session = await ort.InferenceSession.create(modelURL);
