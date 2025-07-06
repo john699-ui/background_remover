@@ -1,6 +1,7 @@
 // auto_remove.js
 
-let ort = null;
+//let ort = null;
+let ort = window.ort;
 let session = null;
 
 export async function initONNX() {
