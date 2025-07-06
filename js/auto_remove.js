@@ -1,5 +1,5 @@
 // auto_remove.js
-
+import { outputToMaskImage } from './mask_utils.js';
 //let ort = null;
 let ort = window.ort;
 let session = null;
