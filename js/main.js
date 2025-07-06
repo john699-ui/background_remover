@@ -42,7 +42,7 @@ imageLoader.addEventListener('change', e => {
 window.runAI = () => {
   if (!originalImage) return;
   mode = 'auto';
-  runAutoRemove(canvasAuto, ctxAuto);
+  runAI(canvasAuto, originalImage); // ✅ correct usage
   canvasAuto.style.display = 'block';
   canvasManual.style.display = 'none';
 };
