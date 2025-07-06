@@ -14,19 +14,34 @@ export async function initONNX() {
   }
 }
 
-export async function runAI(canvasAuto, image) {
-  if (!ort || !session) await initONNX();
+export async function runAI(canvas, image) {
+  const ctx = canvas.getContext('2d');
 
-  const [inputTensor, width, height] = preprocess(image);
+  // STEP 1: Resize image to 320x320 for ONNX input
+  const resizedCanvas = document.createElement('canvas');
+  resizedCanvas.width = 320;
+  resizedCanvas.height = 320;
+  const rCtx = resizedCanvas.getContext('2d');
+  rCtx.drawImage(image, 0, 0, 320, 320);
 
-  const feeds = {};
-  feeds[session.inputNames[0]] = inputTensor;
+  const inputData = getImageTensor(resizedCanvas); // Convert to tensor
 
+  // STEP 2: Run ONNX model
+  await initONNX();
+  const feeds = { 'input.1': inputData };
   const results = await session.run(feeds);
-  const output = results[session.outputNames[0]];
+  const output = results['output.0'].data;
 
-  const mask = postprocess(output, width, height);
-  applyMask(canvasAuto, image, mask);
+  // STEP 3: Resize output mask to original canvas size
+  const maskImage = outputToMaskImage(output, 320, 320);
+
+  const tmp = document.createElement('canvas');
+  tmp.width = canvas.width;
+  tmp.height = canvas.height;
+  tmp.getContext('2d').putImageData(maskImage, 0, 0);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(tmp, 0, 0, canvas.width, canvas.height);
 }
 
 function preprocess(image) {
