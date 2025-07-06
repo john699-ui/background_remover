@@ -164,7 +164,8 @@ function applyMask(canvas, image, mask) {
   const imageData = tempCtx.getImageData(0, 0, image.width, image.height);
 
   for (let i = 0; i < mask.data.length; i += 4) {
-    imageData.data[i + 3] = mask.data[i + 3]; // apply alpha
+    //imageData.data[i + 3] = mask.data[i + 3]; // apply alpha
+    imageData.data[i + 3] = 255 - mask.data[i + 3]; // ✅ inverts alpha
   }
 
   ctx.putImageData(imageData, 0, 0);
