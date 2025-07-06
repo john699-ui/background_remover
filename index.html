@@ -49,6 +49,7 @@
     <input type="file" id="imageLoader" accept="image/*" />
     <input type="file" id="bgLoader" accept="image/*" />
     <button onclick="runAI()">Auto Remove</button>
+    <button onclick="switchToManual()">Manual Edit</button>
     <button onclick="enableRestore()">Restore Brush</button>
     <button onclick="enablePolygonErase()">Polygon Erase</button>
     <select id="brushSize">
@@ -70,6 +71,7 @@
     <canvas id="canvasBG"></canvas>
     <canvas id="canvasManual"></canvas>
     <canvas id="canvasAuto"></canvas>
+    <canvas id="canvasManual" width="800" height="600" style="display:none; position:absolute; top:0; left:0; z-index:2;"></canvas>
   </div>
 
   <!-- AdSense or Affiliate Placeholder -->
