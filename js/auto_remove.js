@@ -11,6 +11,7 @@ export async function initONNX() {
 
   if (!session) {
     session = await ort.InferenceSession.create('u2netp.onnx');
+    //console.log("ONNX Results:", results);
   }
 }
 
@@ -28,9 +29,12 @@ export async function runAI(canvas, image) {
 
   // STEP 2: Run ONNX model
   await initONNX();
+  console.log("✅ ONNX model initialized successfully");
   const feeds = { 'input.1': inputData };
   const results = await session.run(feeds);
-  const output = results['output.0'].data;
+  const firstKey = Object.keys(results)[0];
+  const outputTensor = results[firstKey];
+  const output = outputTensor.data;
 
   // STEP 3: Resize output mask to original canvas size
   const maskImage = outputToMaskImage(output, 320, 320);
