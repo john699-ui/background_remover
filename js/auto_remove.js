@@ -38,7 +38,17 @@ export async function runAI(canvas, image) {
 
   // STEP 3: Resize output mask to original canvas size
   const maskImage = outputToMaskImage(output, 320, 320);
+  //added// 1. Draw 320x320 mask onto a temp canvas 
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = 320;
+  tempCanvas.height = 320;
+  const tempCtx = tempCanvas.getContext('2d');
+  tempCtx.putImageData(maskImage, 0, 0);
 
+  // 2. Scale it to original canvas size
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(tempCanvas, 0, 0, canvas.width, canvas.height);
+  // added up to this
   const tmp = document.createElement('canvas');
   tmp.width = canvas.width;
   tmp.height = canvas.height;
