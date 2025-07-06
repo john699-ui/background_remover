@@ -3,101 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Background Remover</title>
+  <title>AI Background Remover Tool</title>
+
+  <!-- Optional favicon (currently not present) -->
+  <!-- <link rel="icon" href="favicon.ico" type="image/x-icon" /> -->
+
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      touch-action: none;
-    }
-    #canvasContainer {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      background: #ddd;
+    body { margin: 0; font-family: sans-serif; }
+    #toolbar {
+      padding: 10px;
+      background: #f3f3f3;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
     }
     canvas {
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
       touch-action: none;
     }
-    #controls {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(255,255,255,0.8);
-      padding: 10px;
-      border-radius: 10px;
-      z-index: 10;
+    #canvas-container {
+      position: relative;
+      width: 100%;
+      height: 90vh;
+      overflow: hidden;
+      background: #ddd;
     }
-    input[type="range"] {
-      width: 100px;
-    }
-    select, button {
-      margin-top: 5px;
-    }
-    #bottomAd {
-      position: fixed;
-      bottom: 0;
+    #ad-banner {
       width: 100%;
       text-align: center;
-      background: white;
-      padding: 5px;
-      z-index: 9999;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      padding: 8px;
+      background: #f0f0f0;
+      border-top: 1px solid #ccc;
+      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
-  <div id="canvasContainer">
+
+  <div id="toolbar">
+    <input type="file" id="imageLoader" accept="image/*" />
+    <input type="file" id="bgLoader" accept="image/*" />
+    <button onclick="runAI()">Auto Remove</button>
+    <button onclick="enableRestore()">Restore Brush</button>
+    <button onclick="enablePolygonErase()">Polygon Erase</button>
+    <select id="brushSize">
+      <option value="5">Brush: Small</option>
+      <option value="15">Medium</option>
+      <option value="30">Large</option>
+    </select>
+    <select id="downloadFormat">
+      <option value="png">PNG</option>
+      <option value="jpeg">JPG</option>
+    </select>
+    <button onclick="downloadResult()">Download</button>
+  </div>
+
+  <!-- Optional banner image (commented until available) -->
+  <!-- <img src="assets/banner.jpg" alt="Banner" style="width:100%; display:block;" /> -->
+
+  <div id="canvas-container">
     <canvas id="canvasBG"></canvas>
     <canvas id="canvasManual"></canvas>
     <canvas id="canvasAuto"></canvas>
-    <div id="controls">
-      <input type="file" id="imageLoader" accept="image/*"><br>
-      <button onclick="runAI()">AI Remove</button>
-      <button onclick="activateManualMode()">Manual Only</button>
-      <button onclick="enableRestore()">Restore Brush</button>
-      <button onclick="enablePolygonErase()">Polygon Erase</button><br>
-      <input type="range" id="brushSize" min="5" max="100" value="30">
-      <label for="brushSize">Brush Size</label><br>
-      <label for="bgLoader">Choose Background File</label>
-      <input type="file" id="bgLoader" accept="image/*"><br>
-      <label for="downloadFormat">Download As:</label>
-      <select id="downloadFormat">
-        <option value="png">PNG</option>
-        <option value="jpeg">JPG</option>
-      </select>
-      <button onclick="downloadResult()">Download</button>
-
-      <!-- AdSense Placeholder -->
-      <div style="margin-top: 10px;">
-        <!-- Replace with actual AdSense code -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-             data-ad-slot="YYYYYYYYYY"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-    </div>
   </div>
 
-  <!-- Bottom Banner Ad Placeholder -->
-  <div id="bottomAd">
-    <!-- Replace with your affiliate or AdSense code -->
-    <a href="https://your-affiliate-link.com" target="_blank">
-      <img src="https://your-affiliate-banner.com/banner.jpg" style="max-width: 90%; height: auto;" alt="Your Ad">
-    </a>
+  <!-- AdSense or Affiliate Placeholder -->
+  <div id="ad-banner">
+    <!-- Example AdSense or affiliate code goes here -->
+    <em>Your Ad / Affiliate Banner</em>
   </div>
 
+  <!-- Scripts -->
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
