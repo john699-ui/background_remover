@@ -82,3 +82,12 @@ window.downloadResult = () => {
   link.href = exportCanvas.toDataURL(mime);
   link.click();
 };
+window.switchToManual = () => {
+  mode = 'manual';
+  canvasAuto.style.display = 'block';     // Show AI result as reference
+  canvasManual.style.display = 'block';   // Activate manual layer
+  canvasManual.style.pointerEvents = 'auto';
+
+  // Optional: grey out canvasAuto so it's "locked"
+  canvasAuto.style.opacity = 0.5;
+};
