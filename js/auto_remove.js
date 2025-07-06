@@ -44,6 +44,22 @@ export async function runAI(canvas, image) {
   ctx.drawImage(tmp, 0, 0, canvas.width, canvas.height);
 }
 
+function getImageTensor(canvas) {
+  const ctx = canvas.getContext('2d');
+  const imageData = ctx.getImageData(0, 0, 320, 320);
+  const { data } = imageData;
+
+  // Normalize and convert to Float32Array [1, 3, 320, 320]
+  const tensorData = new Float32Array(1 * 3 * 320 * 320);
+  for (let i = 0; i < 320 * 320; i++) {
+    tensorData[i] = data[i * 4] / 255;         // R
+    tensorData[i + 320 * 320] = data[i * 4 + 1] / 255; // G
+    tensorData[i + 2 * 320 * 320] = data[i * 4 + 2] / 255; // B
+  }
+
+  return new ort.Tensor('float32', tensorData, [1, 3, 320, 320]);
+}
+
 function preprocess(image) {
   const width = image.width;
   const height = image.height;
