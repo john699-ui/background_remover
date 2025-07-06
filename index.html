@@ -5,258 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Background Remover</title>
   <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      background: #f4f4f4;
-      padding: 20px;
-    }
-    .dropzone {
-      border: 2px dashed #aaa;
-      padding: 30px;
-      background: white;
-      margin-bottom: 20px;
-      cursor: pointer;
-    }
-    canvas {
-      max-width: 100%;
-      border: 1px solid #ccc;
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
       touch-action: none;
     }
-    .controls {
-      margin: 20px 0;
+    #canvasContainer {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: #ddd;
     }
-    input[type="color"], select {
-      margin-left: 10px;
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+    #controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255,255,255,0.8);
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+    input[type="range"] {
+      width: 100px;
+    }
+    select, button {
+      margin-top: 5px;
+    }
+    #bottomAd {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      background: white;
       padding: 5px;
-    }
-    button {
-      background: #4CAF50;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin: 5px;
-      cursor: pointer;
-    }
-    #progress {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #555;
+      z-index: 9999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
-  <h2>AI Background Remover</h2>
-  <div class="dropzone" id="dropzone">Drag & Drop Image or Click to Upload</div>
-  <input type="file" id="fileInput" accept="image/*" style="display:none">
+  <div id="canvasContainer">
+    <canvas id="canvasBG"></canvas>
+    <canvas id="canvasManual"></canvas>
+    <canvas id="canvasAuto"></canvas>
+    <div id="controls">
+      <input type="file" id="imageLoader" accept="image/*"><br>
+      <button onclick="runAI()">AI Remove</button>
+      <button onclick="activateManualMode()">Manual Only</button>
+      <button onclick="enableRestore()">Restore Brush</button>
+      <button onclick="enablePolygonErase()">Polygon Erase</button><br>
+      <input type="range" id="brushSize" min="5" max="100" value="30">
+      <label for="brushSize">Brush Size</label><br>
+      <label for="bgLoader">Choose Background File</label>
+      <input type="file" id="bgLoader" accept="image/*"><br>
+      <label for="downloadFormat">Download As:</label>
+      <select id="downloadFormat">
+        <option value="png">PNG</option>
+        <option value="jpeg">JPG</option>
+      </select>
+      <button onclick="downloadResult()">Download</button>
 
-  <div class="controls">
-    Background Fill Color: <input type="color" id="bgColor" value="#ffffff">
-    <label for="modelSelect">Model:</label>
-    <select id="modelSelect">
-      <option value="u2netp">Fast (u2netp)</option>
-      <option value="u2net">High Quality (u2net)</option>
-    </select>
-    <button id="removeBtn">Remove Background</button>
-    <button id="downloadBtn">Download PNG</button>
-    <div id="progress"></div>
+      <!-- AdSense Placeholder -->
+      <div style="margin-top: 10px;">
+        <!-- Replace with actual AdSense code -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="YYYYYYYYYY"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
   </div>
 
-  <div class="controls" id="polygonControls">
-    <button id="undoPointBtn">Undo Last Point</button>
-    <button id="applyEraseBtn">Apply Erase Mask</button>
+  <!-- Bottom Banner Ad Placeholder -->
+  <div id="bottomAd">
+    <!-- Replace with your affiliate or AdSense code -->
+    <a href="https://your-affiliate-link.com" target="_blank">
+      <img src="https://your-affiliate-banner.com/banner.jpg" style="max-width: 90%; height: auto;" alt="Your Ad">
+    </a>
   </div>
 
-  <canvas id="canvas"></canvas>
-
-  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
-  <script>
-    const dropzone = document.getElementById('dropzone');
-    const fileInput = document.getElementById('fileInput');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const removeBtn = document.getElementById('removeBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const bgColorInput = document.getElementById('bgColor');
-    const modelSelect = document.getElementById('modelSelect');
-    const progress = document.getElementById('progress');
-    const undoPointBtn = document.getElementById('undoPointBtn');
-    const applyEraseBtn = document.getElementById('applyEraseBtn');
-    const polygonControls = document.getElementById('polygonControls');
-
-    let imageBitmap = null;
-    let polygonPoints = [];
-    let drawingPolygon = false;
-    let session = null;
-
-    dropzone.addEventListener('click', () => fileInput.click());
-    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.style.background = '#eef'; });
-    dropzone.addEventListener('dragleave', () => dropzone.style.background = 'white');
-    dropzone.addEventListener('drop', e => {
-      e.preventDefault();
-      dropzone.style.background = 'white';
-      handleFile(e.dataTransfer.files[0]);
-    });
-    fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
-
-    canvas.addEventListener('pointerdown', e => {
-      if (!drawingPolygon) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      polygonPoints.push({ x, y });
-      drawPolygon();
-    });
-
-    undoPointBtn.onclick = () => {
-      polygonPoints.pop();
-      drawPolygon();
-    };
-
-    applyEraseBtn.onclick = () => {
-      if (polygonPoints.length < 3) return;
-      const maskCanvas = document.createElement('canvas');
-      maskCanvas.width = canvas.width;
-      maskCanvas.height = canvas.height;
-      const maskCtx = maskCanvas.getContext('2d');
-
-      maskCtx.fillStyle = '#000';
-      maskCtx.beginPath();
-      maskCtx.moveTo(polygonPoints[0].x, polygonPoints[0].y);
-      for (let i = 1; i < polygonPoints.length; i++) {
-        maskCtx.lineTo(polygonPoints[i].x, polygonPoints[i].y);
-      }
-      maskCtx.closePath();
-      maskCtx.fill();
-
-      const maskData = maskCtx.getImageData(0, 0, canvas.width, canvas.height);
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const bgColor = hexToRGB(bgColorInput.value);
-
-      for (let i = 0; i < imgData.data.length; i += 4) {
-        if (maskData.data[i] > 0) {
-          imgData.data[i] = bgColor[0];
-          imgData.data[i + 1] = bgColor[1];
-          imgData.data[i + 2] = bgColor[2];
-          imgData.data[i + 3] = 255;
-        }
-      }
-
-      ctx.putImageData(imgData, 0, 0);
-      polygonPoints = [];
-      drawPolygon();
-    };
-
-    removeBtn.onclick = async () => {
-      if (!imageBitmap) return;
-      const modelURL = modelSelect.value === 'u2net'
-        ? 'https://raw.githubusercontent.com/john699-ui/background_remover/main/u2net.onnx'
-        : 'https://raw.githubusercontent.com/john699-ui/background_remover/main/u2netp.onnx';
-
-      progress.textContent = 'Loading model...';
-      session = await ort.InferenceSession.create(modelURL);
-
-      progress.textContent = 'Preprocessing...';
-      const resized = await createImageBitmap(imageBitmap, {
-        resizeWidth: 320,
-        resizeHeight: 320,
-        resizeQuality: 'high'
-      });
-      const offCanvas = new OffscreenCanvas(320, 320);
-      const offCtx = offCanvas.getContext('2d');
-      offCtx.drawImage(resized, 0, 0, 320, 320);
-      const inputData = offCtx.getImageData(0, 0, 320, 320).data;
-
-      const input = new Float32Array(3 * 320 * 320);
-      for (let i = 0; i < 320 * 320; i++) {
-        input[i] = inputData[i * 4] / 255;
-        input[i + 320 * 320] = inputData[i * 4 + 1] / 255;
-        input[i + 2 * 320 * 320] = inputData[i * 4 + 2] / 255;
-      }
-
-      const tensor = new ort.Tensor('float32', input, [1, 3, 320, 320]);
-      progress.textContent = 'Running model...';
-      const outputMap = await session.run({ 'input.1': tensor });
-      const output = outputMap[Object.keys(outputMap)[0]].data;
-
-      progress.textContent = 'Postprocessing...';
-      const maskCanvas = new OffscreenCanvas(320, 320);
-      const maskCtx = maskCanvas.getContext('2d');
-      const maskImageData = maskCtx.createImageData(320, 320);
-      for (let i = 0; i < output.length; i++) {
-        const val = Math.min(255, Math.max(0, output[i] * 255));
-        maskImageData.data[i * 4] = val;
-        maskImageData.data[i * 4 + 1] = val;
-        maskImageData.data[i * 4 + 2] = val;
-        maskImageData.data[i * 4 + 3] = 255;
-      }
-      maskCtx.putImageData(maskImageData, 0, 0);
-
-      const finalMask = new Image();
-      finalMask.src = maskCanvas.transferToImageBitmap();
-
-      // Composite final image with background color
-      ctx.drawImage(imageBitmap, 0, 0);
-      const originalData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const bgColor = hexToRGB(bgColorInput.value);
-      for (let i = 0; i < output.length; i++) {
-        const maskVal = output[i];
-        const x = i % 320;
-        const y = Math.floor(i / 320);
-        const tx = Math.floor(x * canvas.width / 320);
-        const ty = Math.floor(y * canvas.height / 320);
-        const idx = (ty * canvas.width + tx) * 4;
-        if (maskVal < 0.5) {
-          originalData.data[idx] = bgColor[0];
-          originalData.data[idx + 1] = bgColor[1];
-          originalData.data[idx + 2] = bgColor[2];
-          originalData.data[idx + 3] = 255;
-        }
-      }
-
-      ctx.putImageData(originalData, 0, 0);
-      progress.textContent = 'Done';
-    };
-
-    downloadBtn.onclick = () => {
-      const link = document.createElement('a');
-      link.download = 'bg_removed.png';
-      link.href = canvas.toDataURL();
-      link.click();
-    };
-
-    function drawPolygon() {
-      if (!imageBitmap) return;
-      ctx.drawImage(imageBitmap, 0, 0);
-      if (polygonPoints.length === 0) return;
-      ctx.strokeStyle = 'red';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(polygonPoints[0].x, polygonPoints[0].y);
-      for (let i = 1; i < polygonPoints.length; i++) {
-        ctx.lineTo(polygonPoints[i].x, polygonPoints[i].y);
-      }
-      ctx.stroke();
-    }
-
-    function hexToRGB(hex) {
-      const bigint = parseInt(hex.slice(1), 16);
-      return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-    }
-
-    async function handleFile(file) {
-      if (!file || !file.type.startsWith('image/')) return;
-      const img = await createImageBitmap(file);
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      imageBitmap = img;
-      drawingPolygon = true;
-      polygonControls.style.display = 'block';
-    }
-  </script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
-
-
-
