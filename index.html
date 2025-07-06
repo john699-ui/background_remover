@@ -4,11 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Background Remover Tool</title>
+
   <!-- ONNX Runtime -->
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
-
-  <!-- Optional favicon (currently not present) -->
-  <!-- <link rel="icon" href="favicon.ico" type="image/x-icon" /> -->
 
   <style>
     body { margin: 0; font-family: sans-serif; }
@@ -51,12 +49,16 @@
     <button onclick="runAI()">Auto Remove</button>
     <button onclick="switchToManual()">Manual Edit</button>
     <button onclick="enableRestore()">Restore Brush</button>
-    <button onclick="enablePolygonErase()">Polygon Erase</button>
+    <button onclick="startPolygonErase()">Polygon Erase</button>
+    <button onclick="undoPolygon()">Undo</button>
+    <button onclick="confirmErase()">Confirm Erase</button>
+
     <select id="brushSize">
       <option value="5">Brush: Small</option>
       <option value="15">Medium</option>
       <option value="30">Large</option>
     </select>
+
     <select id="downloadFormat">
       <option value="png">PNG</option>
       <option value="jpeg">JPG</option>
@@ -64,21 +66,21 @@
     <button onclick="downloadResult()">Download</button>
   </div>
 
-  <!-- Optional banner image (commented until available) -->
-  <!-- <img src="assets/banner.jpg" alt="Banner" style="width:100%; display:block;" /> -->
-
   <div id="canvas-container">
     <canvas id="canvasBG"></canvas>
-    <!--<canvas id="canvasManual"></canvas>-->
     <canvas id="canvasAuto"></canvas>
     <canvas id="canvasManual" width="800" height="600" style="display:none; position:absolute; top:0; left:0; z-index:2;"></canvas>
   </div>
 
   <!-- AdSense or Affiliate Placeholder -->
   <div id="ad-banner">
-    <!-- Example AdSense or affiliate code goes here -->
     <em>Your Ad / Affiliate Banner</em>
   </div>
+
+  <!-- Main Script -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
 
   <!-- Scripts -->
   <script type="module" src="js/main.js"></script>
