@@ -78,7 +78,7 @@ window.enablePolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   activateManualErase(canvasManual, ctxManual);
 };
-
+/*
 window.downloadResult = () => {
   const format = document.getElementById('downloadFormat').value;
   const exportCanvas = document.createElement('canvas');
@@ -93,6 +93,36 @@ window.downloadResult = () => {
   const link = document.createElement('a');
   link.download = `output.${format}`;
   link.href = exportCanvas.toDataURL(mime);
+  link.click();
+};
+*/
+window.downloadResult = () => {
+  const format = document.getElementById('downloadFormat').value;
+
+  // Create temporary canvas
+  const finalCanvas = document.createElement('canvas');
+  const width = canvasAuto.width;
+  const height = canvasAuto.height;
+  finalCanvas.width = width;
+  finalCanvas.height = height;
+
+  const finalCtx = finalCanvas.getContext('2d');
+
+  // ✅ Draw background if it's visible
+  if (canvasBG && canvasBG.style.display !== 'none') {
+    finalCtx.drawImage(canvasBG, 0, 0, width, height);
+  }
+
+  // ✅ Draw AI-removed result
+  finalCtx.drawImage(canvasAuto, 0, 0, width, height);
+
+  // ✅ Draw manual restore strokes
+  finalCtx.drawImage(canvasManual, 0, 0, width, height);
+
+  // Create download link
+  const link = document.createElement('a');
+  link.download = `background_removed.${format}`;
+  link.href = finalCanvas.toDataURL(`image/${format}`);
   link.click();
 };
 window.switchToManual = () => {
