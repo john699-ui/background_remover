@@ -74,3 +74,9 @@ function drawBrushStroke(e) {
   ctxManual.globalAlpha = 1.0;
   ctxManual.drawImage(tempCanvas, x - brushSize / 2, y - brushSize / 2);
 }
+export function disableRestoreBrush(canvas) {
+  canvas.removeEventListener('pointerdown', onPointerDown);
+  canvas.removeEventListener('pointermove', onPointerMove);
+  canvas.removeEventListener('pointerup', () => (isRestoring = false));
+  canvas.removeEventListener('pointerleave', () => (isRestoring = false));
+}
