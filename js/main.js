@@ -81,6 +81,12 @@ window.enablePolygonErase = () => {
 };
 window.startPolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
+  // Disable restore brush listeners
+  canvasManual.removeEventListener('pointerdown', onRestorePointerDown);
+  canvasManual.removeEventListener('pointermove', onRestorePointerMove);
+  canvasManual.removeEventListener('pointerup', onRestorePointerUp);
+  canvasManual.removeEventListener('pointerleave', onRestorePointerUp);
+
   initPolygonErase(canvasManual, () => {
     console.log("✅ Polygon erase completed.");
   });
