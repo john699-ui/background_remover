@@ -4,6 +4,7 @@ import { runAI } from './auto_remove.js'; // correct function name and file
 import { initRestoreBrush } from './manual_restore.js'; // correct function and file
 import { initBackgroundLayer } from './background_layer.js';
 import { initPolygonErase, applyErase, cancelPolygon, undoLastPoint } from './polygon_erase.js';
+import { disableRestoreBrush } from './manual_restore.js';
 //import { initRestoreBrush} from './manual_restore.js';
 
 let canvasAuto = document.getElementById('canvasAuto');
@@ -82,10 +83,8 @@ window.enablePolygonErase = () => {
 window.startPolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   // Disable restore brush listeners
-  canvasManual.removeEventListener('pointerdown', onRestorePointerDown);
-  canvasManual.removeEventListener('pointermove', onRestorePointerMove);
-  canvasManual.removeEventListener('pointerup', onRestorePointerUp);
-  canvasManual.removeEventListener('pointerleave', onRestorePointerUp);
+  // 🧼 Remove restore brush listeners
+  disableRestoreBrush(canvasManual);
 
   initPolygonErase(canvasManual, () => {
     console.log("✅ Polygon erase completed.");
