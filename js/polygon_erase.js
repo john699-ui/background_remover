@@ -1,5 +1,5 @@
 // polygon_erase.js
-export { initPolygonErase, applyErase, cancelPolygon, undoLastPoint };
+export {applyErase, cancelPolygon, undoLastPoint };
 let points = [];
 let isDrawing = false;
 let ctxManual = null;
