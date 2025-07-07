@@ -3,7 +3,7 @@ import { initCanvasSync } from './canvas_sync.js';
 import { runAI } from './auto_remove.js'; // correct function name and file
 import { initRestoreBrush } from './manual_restore.js'; // correct function and file
 import { initBackgroundLayer } from './background_layer.js';
-import { initRestoreBrush, enableRestore } from './manual_restore.js';
+import { initRestoreBrush} from './manual_restore.js';
 
 let canvasAuto = document.getElementById('canvasAuto');
 let canvasManual = document.getElementById('canvasManual');
@@ -57,12 +57,21 @@ window.activateManualMode = () => {
   ctxManual.clearRect(0, 0, canvasManual.width, canvasManual.height);
   ctxManual.drawImage(originalImage, 0, 0);
 };
-
+/*
 window.enableRestore = () => {
   if (mode !== 'manual') window.activateManualMode();
-  activateRestoreBrush(canvasManual, ctxManual, originalImage, brushSize);
+    const sizeSelector = document.getElementById('brushSize');
+    initRestoreBrush(canvasManual, originalImage, sizeSelector);
 };
+*/
+window.enableRestore = () => {
+  if (mode !== 'manual') window.activateManualMode();
 
+  const sizeSelector = document.getElementById('brushSize');
+  initRestoreBrush(canvasManual, originalImage, sizeSelector);
+  canvasManual.style.display = 'block';
+  canvasAuto.style.display = 'block'; // show AI canvas underneath
+};
 window.enablePolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   activateManualErase(canvasManual, ctxManual);
