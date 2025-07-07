@@ -79,6 +79,18 @@ window.enablePolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   activateManualErase(canvasManual, ctxManual);
 };
+window.startPolygonErase = () => {
+  if (mode !== 'manual') window.activateManualMode();
+  initPolygonErase(canvasManual, () => {
+    console.log("✅ Polygon erase completed.");
+  });
+};
+window.confirmErase = () => {
+  applyErase();
+};
+window.undoPolygon = () => {
+  undoLastPoint();
+};
 /*
 window.downloadResult = () => {
   const format = document.getElementById('downloadFormat').value;
