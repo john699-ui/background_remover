@@ -3,6 +3,7 @@ import { initCanvasSync } from './canvas_sync.js';
 import { runAI } from './auto_remove.js'; // correct function name and file
 import { initRestoreBrush } from './manual_restore.js'; // correct function and file
 import { initBackgroundLayer } from './background_layer.js';
+import { initRestoreBrush, enableRestore } from './manual_restore.js';
 
 let canvasAuto = document.getElementById('canvasAuto');
 let canvasManual = document.getElementById('canvasManual');
@@ -35,6 +36,7 @@ imageLoader.addEventListener('change', e => {
     ctxAuto.drawImage(img, 0, 0);
     ctxManual.drawImage(img, 0, 0);
     originalImage = img;
+    initRestoreBrush(canvasManual, originalImage);
   };
   img.src = URL.createObjectURL(file);
 });
