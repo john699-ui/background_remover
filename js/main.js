@@ -66,6 +66,8 @@ window.enableRestore = () => {
 */
 window.enableRestore = () => {
   if (mode !== 'manual') window.activateManualMode();
+  
+  ctxManual.clearRect(0, 0, canvasManual.width, canvasManual.height);
 
   const sizeSelector = document.getElementById('brushSize');
   initRestoreBrush(canvasManual, originalImage, sizeSelector);
