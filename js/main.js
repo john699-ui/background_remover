@@ -55,8 +55,8 @@ window.activateManualMode = () => {
   mode = 'manual';
   canvasAuto.style.display = 'none';
   canvasManual.style.display = 'block';
-  ctxManual.clearRect(0, 0, canvasManual.width, canvasManual.height);
-  ctxManual.drawImage(originalImage, 0, 0);
+  //ctxManual.clearRect(0, 0, canvasManual.width, canvasManual.height);
+  //ctxManual.drawImage(originalImage, 0, 0);
 };
 /*
 window.enableRestore = () => {
