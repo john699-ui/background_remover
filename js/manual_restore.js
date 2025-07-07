@@ -1,11 +1,12 @@
 // manual_restore.js
-
+let alreadyInitialized = false;
 let isRestoring = false;
 let brushSize = 15;
 let ctxManual = null;
 let canvasManual = null;
 let baseImage = null;
 
+/*
 export function initRestoreBrush(canvas, image, sizeSelector) {
   canvasManual = canvas;
   ctxManual = canvas.getContext('2d');
@@ -20,7 +21,24 @@ export function initRestoreBrush(canvas, image, sizeSelector) {
     brushSize = parseInt(e.target.value);
   });
 }
+*/
+export function initRestoreBrush(canvas, image, sizeSelector) {
+  if (alreadyInitialized) return; // prevent double-binding
+  alreadyInitialized = true;
 
+  canvasManual = canvas;
+  ctxManual = canvas.getContext('2d');
+  baseImage = image;
+
+  canvas.addEventListener('pointerdown', onPointerDown);
+  canvas.addEventListener('pointermove', onPointerMove);
+  canvas.addEventListener('pointerup', () => (isRestoring = false));
+  canvas.addEventListener('pointerleave', () => (isRestoring = false));
+
+  sizeSelector.addEventListener('change', e => {
+    brushSize = parseInt(e.target.value);
+  });
+}
 function onPointerDown(e) {
   isRestoring = true;
   drawBrushStroke(e);
