@@ -72,7 +72,7 @@ function cancelPolygon() {
   ctxManual.clearRect(0, 0, canvasManual.width, canvasManual.height);
 }
 
-export function undoLastPoint() {
+function undoLastPoint() {
   if (points.length > 0) {
     points.pop();
     drawPolygon();
