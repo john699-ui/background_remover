@@ -38,7 +38,7 @@ imageLoader.addEventListener('change', e => {
     ctxAuto.drawImage(img, 0, 0);
     ctxManual.drawImage(img, 0, 0);
     originalImage = img;
-    initRestoreBrush(canvasManual, originalImage);
+    initRestoreBrush(canvasManual, originalImage, brushSize);
   };
   img.src = URL.createObjectURL(file);
 });
