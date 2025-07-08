@@ -71,8 +71,14 @@ window.enableRestore = () => {
   
   ctxManual.clearRect(0, 0, canvasManual.width, canvasManual.height);
 
+  //const sizeSelector = document.getElementById('brushSize');
+  //initRestoreBrush(canvasManual, originalImage, sizeSelector);
   const sizeSelector = document.getElementById('brushSize');
-  initRestoreBrush(canvasManual, originalImage, sizeSelector);
+  if (sizeSelector) {
+      initRestoreBrush(canvasManual, originalImage, sizeSelector);
+  } else {
+      console.error("❌ brushSize select element not found!");
+  }
   canvasManual.style.display = 'block';
   canvasAuto.style.display = 'block'; // show AI canvas underneath
 };
