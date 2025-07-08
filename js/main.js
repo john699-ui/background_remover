@@ -120,6 +120,7 @@ window.downloadResult = () => {
   link.click();
 };
 */
+/*
 window.downloadResult = () => {
   const format = document.getElementById('downloadFormat').value;
 
@@ -149,6 +150,15 @@ window.downloadResult = () => {
   link.href = finalCanvas.toDataURL(`image/${format}`);
   link.click();
 };
+*/
+function downloadResult() {
+  const format = document.getElementById('downloadFormat').value;
+  const targetCanvas = mode === 'manual' ? canvasManual : canvasAuto;
+  const link = document.createElement('a');
+  link.download = `edited.${format}`;
+  link.href = targetCanvas.toDataURL(`image/${format}`);
+  link.click();
+}
 window.switchToManual = () => {
   mode = 'manual';
   canvasAuto.style.display = 'block';     // Show AI result as reference
