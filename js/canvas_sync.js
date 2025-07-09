@@ -65,3 +65,6 @@ export function redrawAll() {
     ctx.drawImage(image, 0, 0);
   });
 }
+export function getTransform() {
+  return { originX, originY, scale };
+}
