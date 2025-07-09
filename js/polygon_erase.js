@@ -1,4 +1,5 @@
 // polygon_erase.js
+import { getTransform } from './canvas_sync.js';
 export {applyErase, cancelPolygon, undoLastPoint };
 let points = [];
 let isDrawing = false;
