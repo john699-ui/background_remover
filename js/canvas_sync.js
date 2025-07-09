@@ -1,8 +1,10 @@
 // canvas_sync.js
-
+window.originX = 0;
+window.originY = 0;
+window.scale = 1;
 let scale = 1;
-let originX = 0;
-let originY = 0;
+let window.originX = 0;
+let window.originY = 0;
 let isDragging = false;
 let lastX = 0;
 let lastY = 0;
@@ -20,10 +22,10 @@ export function initCanvasSync(imageMap, ...canvases) {
       const delta = e.deltaY > 0 ? -zoomFactor : zoomFactor;
       const mouseX = e.offsetX;
       const mouseY = e.offsetY;
-      const newScale = scale * (1 + delta);
-      originX = mouseX - ((mouseX - originX) * (newScale / scale));
-      originY = mouseY - ((mouseY - originY) * (newScale / scale));
-      scale = newScale;
+      const newScale = window.scale * (1 + delta);
+      window.originX = mouseX - ((mouseX - window.originX) * (newScale / window.scale));
+      window.originY = mouseY - ((mouseY - window.originY) * (newScale / window.scale));
+      window.scale = newScale;
       redrawAll();
     }, { passive: false });
 
@@ -37,8 +39,8 @@ export function initCanvasSync(imageMap, ...canvases) {
       if (!isDragging) return;
       const dx = e.clientX - lastX;
       const dy = e.clientY - lastY;
-      originX += dx;
-      originY += dy;
+      window.originX += dx;
+      window.originY += dy;
       lastX = e.clientX;
       lastY = e.clientY;
       redrawAll();
@@ -61,10 +63,14 @@ export function redrawAll() {
     if (!image) return;
 
     canvas.width = canvas.width; // reset canvas state
-    ctx.setTransform(scale, 0, 0, scale, originX, originY);
+    ctx.setTransform(window.scale, 0, 0, window.scale, window.originX, window.originY);
     ctx.drawImage(image, 0, 0);
   });
 }
 export function getTransform() {
-  return { originX, originY, scale };
+  return {
+    originX: window.originX || 0,
+    originY: window.originY || 0,
+    scale: window.scale || 1
+  };
 }
