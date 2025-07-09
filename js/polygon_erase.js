@@ -29,25 +29,24 @@ function onPointerDown(e) {
 function drawPolygon() {
   if (points.length === 0) return;
 
-  ctxManual.clearRect(0, 0, canvasManual.width, canvasManual.height);
-  ctxManual.beginPath();
-  ctxManual.moveTo(points[0][0], points[0][1]);
+  // Create overlay just for previewing the polygon
+  const overlayCanvas = document.getElementById('canvasPolygon');
+  const overlayCtx = overlayCanvas.getContext('2d');
+  overlayCanvas.width = canvasManual.width;
+  overlayCanvas.height = canvasManual.height;
+
+  overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+  overlayCtx.beginPath();
+  overlayCtx.moveTo(points[0][0], points[0][1]);
 
   for (let i = 1; i < points.length; i++) {
-    ctxManual.lineTo(points[i][0], points[i][1]);
+    overlayCtx.lineTo(points[i][0], points[i][1]);
   }
 
-  ctxManual.strokeStyle = 'rgba(255, 0, 0, 0.6)';
-  ctxManual.lineWidth = 2;
-  ctxManual.stroke();
-}
-
-function onKeyDown(e) {
-  if (e.key === 'Enter' && points.length >= 3) {
-    applyErase();
-  } else if (e.key === 'Escape') {
-    cancelPolygon();
-  }
+  overlayCtx.strokeStyle = 'red';
+  overlayCtx.lineWidth = 2;
+  overlayCtx.stroke();
 }
 
 function applyErase() {
@@ -60,7 +59,9 @@ function applyErase() {
   ctxManual.closePath();
   ctxManual.clip();
 
-  ctxManual.clearRect(0, 0, canvasManual.width, canvasManual.height);
+  ctxManual.globalCompositeOperation = 'destination-out';
+  ctxManual.fill();
+  ctxManual.globalCompositeOperation = 'source-over';
   ctxManual.restore();
 
   if (eraseCallback) eraseCallback();
@@ -69,7 +70,12 @@ function applyErase() {
 
 function cancelPolygon() {
   points = [];
-  ctxManual.clearRect(0, 0, canvasManual.width, canvasManual.height);
+
+  const overlayCanvas = document.getElementById('canvasPolygon');
+  if (overlayCanvas) {
+    const overlayCtx = overlayCanvas.getContext('2d');
+    overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+  }
 }
 
 function undoLastPoint() {
