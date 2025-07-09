@@ -153,40 +153,57 @@ window.downloadResult = () => {
 */
 window.quickDownload = () => {
   const format = document.getElementById('downloadFormat').value;
-  const targetCanvas = mode === 'manual' ? canvasManual : canvasAuto;
-  const link = document.createElement('a');
-  link.download = `quick_edit.${format}`;
-  link.href = targetCanvas.toDataURL(`image/${format}`);
-  link.click();
-};
-
-window.downloadResult = () => {
-  const format = document.getElementById('downloadFormat').value;
 
   const tempCanvas = document.createElement('canvas');
   tempCanvas.width = canvasManual.width;
   tempCanvas.height = canvasManual.height;
   const tempCtx = tempCanvas.getContext('2d');
 
-  if (canvasBG && canvasBG.width > 0) {
+  // Optional: clear to transparent background
+  tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+  // 1. Draw background if visible
+  if (canvasBG && canvasBG.style.display !== 'none') {
     tempCtx.drawImage(canvasBG, 0, 0);
   }
 
+  // 2. Draw AI layer if visible
   if (canvasAuto && canvasAuto.style.display !== 'none') {
     tempCtx.drawImage(canvasAuto, 0, 0);
   }
 
+  // 3. Draw manual edits if visible
   if (canvasManual && canvasManual.style.display !== 'none') {
     tempCtx.drawImage(canvasManual, 0, 0);
   }
 
-  tempCanvas.toBlob(blob => {
-    const link = document.createElement('a');
-    link.download = `edited.${format}`;
-    link.href = URL.createObjectURL(blob);
-    link.click();
-    URL.revokeObjectURL(link.href);
-  }, `image/${format}`);
+  const link = document.createElement('a');
+  link.download = `visible_result.${format}`;
+  link.href = tempCanvas.toDataURL(`image/${format}`);
+  link.click();
+};
+
+window.downloadAIResult = () => {
+  const format = document.getElementById('downloadFormat').value;
+
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = canvasAuto.width;
+  tempCanvas.height = canvasAuto.height;
+  const tempCtx = tempCanvas.getContext('2d');
+
+  // Draw AI layer
+  tempCtx.drawImage(canvasAuto, 0, 0);
+
+  // Draw background layer if visible
+  if (canvasBG && canvasBG.style.display !== 'none') {
+    tempCtx.globalCompositeOperation = 'destination-over';
+    tempCtx.drawImage(canvasBG, 0, 0);
+  }
+
+  const link = document.createElement('a');
+  link.download = `ai_result.${format}`;
+  link.href = tempCanvas.toDataURL(`image/${format}`);
+  link.click();
 };
 window.switchToManual = () => {
   mode = 'manual';
