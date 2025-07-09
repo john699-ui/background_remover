@@ -22,7 +22,7 @@ export function initPolygonErase(canvas, onEraseDone) {
   window.removeEventListener('keydown', onKeyDown); // added
   window.addEventListener('keydown', onKeyDown);
 }
-
+/*
 function onPointerDown(e) {
   if (!canvasManual) return;
 
@@ -34,7 +34,17 @@ function onPointerDown(e) {
   drawPolygon();
   console.log("Point added:", x, y);
 }
+*/
+function onPointerDown(e) {
+  if (!canvasManual) return;
 
+  const rect = canvasManual.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  points.push([x, y]);
+  drawPolygon();
+}
 function drawPolygon() {
   if (points.length === 0) return;
 
