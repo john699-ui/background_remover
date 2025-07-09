@@ -92,8 +92,10 @@ window.startPolygonErase = () => {
   // 🧼 Remove restore brush listeners
   disableRestoreBrush(canvasManual);
 
-  initPolygonErase(canvasManual, () => {
-    console.log("✅ Polygon erase completed.");
+  const canvasPolygon = document.getElementById('canvasPolygon');
+  initPolygonErase(canvasPolygon, canvasManual, () => {
+    console.log("✅ Polygon erase applied");
+  });
   });
 };
 window.confirmErase = () => {
