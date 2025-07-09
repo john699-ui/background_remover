@@ -94,6 +94,7 @@ window.startPolygonErase = () => {
   disableRestoreBrush(canvasManual);
 
   const canvasPolygon = document.getElementById('canvasPolygon');
+  const canvasManual = document.getElementById('canvasManual');
   initPolygonErase(canvasPolygon, canvasManual, () => {
     console.log("✅ Polygon erase applied");
   });
