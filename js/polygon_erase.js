@@ -56,6 +56,7 @@ function drawPolygon() {
   overlayCtx.strokeStyle = 'red';
   overlayCtx.lineWidth = 2;
   overlayCtx.stroke();
+  console.log("Drawing polygon with points:", points);
 }
 
 function applyErase() {
