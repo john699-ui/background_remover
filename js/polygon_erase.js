@@ -19,6 +19,7 @@ export function initPolygonErase(canvas, onEraseDone) {
   eraseCallback = onEraseDone;
 
   canvas.addEventListener('pointerdown', onPointerDown);
+  window.removeEventListener('keydown', onKeyDown); // added
   window.addEventListener('keydown', onKeyDown);
 }
 
