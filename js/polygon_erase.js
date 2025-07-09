@@ -29,9 +29,10 @@ function onPointerDown(e) {
   const rect = canvasManual.getBoundingClientRect();
   const x = (e.clientX - rect.left - window.originX) / window.scale;
   const y = (e.clientY - rect.top - window.originY) / window.scale;
-
+  console.log("Point added:", x, y);
   points.push([x, y]);
   drawPolygon();
+  console.log("Point added:", x, y);
 }
 
 function drawPolygon() {
