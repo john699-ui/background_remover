@@ -96,7 +96,6 @@ window.startPolygonErase = () => {
   const canvasPolygon = document.getElementById('canvasPolygon');
   initPolygonErase(canvasPolygon, canvasManual, () => {
     console.log("✅ Polygon erase applied");
- 
   });
 };
 window.confirmErase = () => {
