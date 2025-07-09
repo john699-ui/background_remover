@@ -3,8 +3,7 @@ window.originX = 0;
 window.originY = 0;
 window.scale = 1;
 let scale = 1;
-let window.originX = 0;
-let window.originY = 0;
+
 let isDragging = false;
 let lastX = 0;
 let lastY = 0;
