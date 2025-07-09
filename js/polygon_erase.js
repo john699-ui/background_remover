@@ -6,6 +6,13 @@ let ctxManual = null;
 let canvasManual = null;
 let eraseCallback = null;
 
+function onKeyDown(e) {
+  if (e.key === 'Enter' && points.length >= 3) {
+    applyErase();
+  } else if (e.key === 'Escape') {
+    cancelPolygon();
+  }
+}
 export function initPolygonErase(canvas, onEraseDone) {
   canvasManual = canvas;
   ctxManual = canvas.getContext('2d');
