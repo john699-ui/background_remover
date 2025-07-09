@@ -46,6 +46,7 @@ function onPointerDown(e) {
   points.push([x, y]);
   drawPolygon();
 } */
+/*
 function onPointerDown(e) {
   if (!canvasManual) return;
 
@@ -54,6 +55,18 @@ function onPointerDown(e) {
 
   const x = (e.clientX - rect.left - originX) / scale;
   const y = (e.clientY - rect.top - originY) / scale;
+
+  points.push([x, y]);
+  console.log("Point added:", x, y);
+  drawPolygon();
+}
+*/
+function onPointerDown(e) {
+  if (!canvasPolygon) return;
+
+  const rect = canvasPolygon.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
 
   points.push([x, y]);
   console.log("Point added:", x, y);
