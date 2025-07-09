@@ -19,7 +19,7 @@ function onKeyDown(e) {
     cancelPolygon();
   }
 }
-/*
+/* last working
 export function initPolygonErase(canvas, onEraseDone) {
   canvasManual = canvas;
   ctxManual = canvas.getContext('2d');
