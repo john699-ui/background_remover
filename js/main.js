@@ -9,6 +9,7 @@ import { disableRestoreBrush } from './manual_restore.js';
 
 let canvasAuto = document.getElementById('canvasAuto');
 let canvasManual = document.getElementById('canvasManual');
+let canvasPolygon = document.getElementById('canvasPolygon');
 let canvasBG = document.getElementById('canvasBG');
 let imageLoader = document.getElementById('imageLoader');
 let bgLoader = document.getElementById('bgLoader');
