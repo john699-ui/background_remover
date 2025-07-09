@@ -120,7 +120,7 @@ window.downloadResult = () => {
   link.click();
 };
 */
-
+/*
 window.downloadResult = () => {
   const format = document.getElementById('downloadFormat').value;
 
@@ -150,7 +150,7 @@ window.downloadResult = () => {
   link.href = finalCanvas.toDataURL(`image/${format}`);
   link.click();
 };
-
+*/
 window.quickDownload = () => {
   const format = document.getElementById('downloadFormat').value;
   const targetCanvas = mode === 'manual' ? canvasManual : canvasAuto;
@@ -158,6 +158,35 @@ window.quickDownload = () => {
   link.download = `quick_edit.${format}`;
   link.href = targetCanvas.toDataURL(`image/${format}`);
   link.click();
+};
+
+window.downloadResult = () => {
+  const format = document.getElementById('downloadFormat').value;
+
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = canvasManual.width;
+  tempCanvas.height = canvasManual.height;
+  const tempCtx = tempCanvas.getContext('2d');
+
+  if (canvasBG && canvasBG.width > 0) {
+    tempCtx.drawImage(canvasBG, 0, 0);
+  }
+
+  if (canvasAuto && canvasAuto.style.display !== 'none') {
+    tempCtx.drawImage(canvasAuto, 0, 0);
+  }
+
+  if (canvasManual && canvasManual.style.display !== 'none') {
+    tempCtx.drawImage(canvasManual, 0, 0);
+  }
+
+  tempCanvas.toBlob(blob => {
+    const link = document.createElement('a');
+    link.download = `edited.${format}`;
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }, `image/${format}`);
 };
 window.switchToManual = () => {
   mode = 'manual';
