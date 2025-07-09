@@ -86,6 +86,7 @@ window.enableRestore = () => {
 window.enablePolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   activateManualErase(canvasManual, ctxManual);
+  console.log("✅ Polygon erase enabled");
 };
 window.startPolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
