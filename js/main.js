@@ -9,7 +9,6 @@ import { disableRestoreBrush } from './manual_restore.js';
 
 let canvasAuto = document.getElementById('canvasAuto');
 let canvasManual = document.getElementById('canvasManual');
-let canvasPolygon = document.getElementById('canvasPolygon');
 let canvasBG = document.getElementById('canvasBG');
 let imageLoader = document.getElementById('imageLoader');
 let bgLoader = document.getElementById('bgLoader');
@@ -18,7 +17,6 @@ let brushSize = document.getElementById('brushSize');
 let ctxAuto = canvasAuto.getContext('2d');
 let ctxManual = canvasManual.getContext('2d');
 let ctxBG = canvasBG.getContext('2d');
-let ctxPolyg = canvasPolygon.getContext('2d');
 
 let originalImage = null;
 let mode = 'idle';
@@ -87,21 +85,15 @@ window.enableRestore = () => {
 window.enablePolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   activateManualErase(canvasManual, ctxManual);
-  console.log("✅ Polygon erase enabled");
 };
 window.startPolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   // Disable restore brush listeners
   // 🧼 Remove restore brush listeners
-  const canvasManual = document.getElementById('canvasManual');
-  const canvasPolygon = document.getElementById('canvasPolygon');
-  
   disableRestoreBrush(canvasManual);
-  //const canvasManual = document.getElementById('canvasManual');
-  //const canvasPolygon = document.getElementById('canvasPolygon');
-  
-  initPolygonErase(canvasPolygon, canvasManual, () => {
-    console.log("✅ Polygon erase applied");
+
+  initPolygonErase(canvasManual, () => {
+    console.log("✅ Polygon erase completed.");
   });
 };
 window.confirmErase = () => {
