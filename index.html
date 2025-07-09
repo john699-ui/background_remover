@@ -23,7 +23,7 @@
       top: 0;
       left: 0;
       touch-action: none;
-      
+      z-index: 2;
     }
     #canvas-container {
       position: relative;
@@ -40,10 +40,14 @@
       border-top: 1px solid #ccc;
       font-size: 0.9em;
     }
-   #canvasBG { z-index: 0; }
-   #canvasAuto { z-index: 1; }
-   #canvasManual { z-index: 2; display: none; } 
-   #canvasPolygon { z-index: 3; }
+   #canvasBG {
+     z-index: 0;
+   }
+   #canvasAuto {
+      z-index: 1;
+   }
+   #canvasManual {
+      z-index: 2;
    }
 
   </style>
@@ -75,10 +79,10 @@
   </div>
 
   <div id="canvas-container">
-    <canvas id="canvasBG" style="z-index:0; position:absolute; top:0; left:0;"></canvas>
-    <canvas id="canvasAuto" style="z-index:1; position:absolute; top:0; left:0;"></canvas>
-    <canvas id="canvasManual" width="800" height="600" style="display:none; z-index:2; position:absolute; top:0; left:0;"></canvas>
-    <canvas id="canvasPolygon" width="800" height="600" style="z-index:3; position:absolute; top:0; left:0;"></canvas>
+    <canvas id="canvasBG"></canvas>
+    <canvas id="canvasAuto"></canvas>
+    <canvas id="canvasManual" width="800" height="600" style="display:none; position:absolute; top:0; left:0; z-index:2;"></canvas>
+    <canvas id="canvasPolygon" style="position:absolute; top:0; left:0; z-index:3; pointer-events:none;"></canvas>
   </div>
 
   <!-- AdSense or Affiliate Placeholder -->
