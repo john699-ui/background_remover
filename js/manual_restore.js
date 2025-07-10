@@ -5,6 +5,7 @@ let brushSize = 15;
 let ctxManual = null;
 let canvasManual = null;
 let baseImage = null;
+let restoreListeners = [];
 
 /*
 export function initRestoreBrush(canvas, image, sizeSelector) {
@@ -97,11 +98,12 @@ export function disableRestoreBrush(canvas) {
   canvas.removeEventListener('pointermove', onPointerMove);
   canvas.removeEventListener('pointerup', () => (isRestoring = false));
   canvas.removeEventListener('pointerleave', () => (isRestoring = false));
+   restoreListeners = [];
 }
 
 //ggggggggggggg
-let restoreListeners = [];
 
+/*
 export function initRestoreBrush(canvas, image, sizeSelector) {
   ctxManual = canvas.getContext('2d');
   baseImage = image;
@@ -118,7 +120,7 @@ export function initRestoreBrush(canvas, image, sizeSelector) {
   sizeSelector.addEventListener('change', e => {
     brushSize = parseInt(e.target.value);
   });
-
+*/
   restoreListeners = [
     ['pointerdown', pointerDown],
     ['pointermove', pointerMove],
@@ -126,10 +128,11 @@ export function initRestoreBrush(canvas, image, sizeSelector) {
     ['pointerleave', pointerUp],
   ];
 }
-
+/*
 export function disableRestoreBrush(canvas) {
   restoreListeners.forEach(([type, fn]) => {
     canvas.removeEventListener(type, fn);
   });
   restoreListeners = [];
 }
+*/
