@@ -98,3 +98,38 @@ export function disableRestoreBrush(canvas) {
   canvas.removeEventListener('pointerup', () => (isRestoring = false));
   canvas.removeEventListener('pointerleave', () => (isRestoring = false));
 }
+
+//ggggggggggggg
+let restoreListeners = [];
+
+export function initRestoreBrush(canvas, image, sizeSelector) {
+  ctxManual = canvas.getContext('2d');
+  baseImage = image;
+
+  const pointerDown = e => { isRestoring = true; drawBrushStroke(e); };
+  const pointerMove = e => { if (isRestoring) drawBrushStroke(e); };
+  const pointerUp = () => { isRestoring = false; };
+
+  canvas.addEventListener('pointerdown', pointerDown);
+  canvas.addEventListener('pointermove', pointerMove);
+  canvas.addEventListener('pointerup', pointerUp);
+  canvas.addEventListener('pointerleave', pointerUp);
+
+  sizeSelector.addEventListener('change', e => {
+    brushSize = parseInt(e.target.value);
+  });
+
+  restoreListeners = [
+    ['pointerdown', pointerDown],
+    ['pointermove', pointerMove],
+    ['pointerup', pointerUp],
+    ['pointerleave', pointerUp],
+  ];
+}
+
+export function disableRestoreBrush(canvas) {
+  restoreListeners.forEach(([type, fn]) => {
+    canvas.removeEventListener(type, fn);
+  });
+  restoreListeners = [];
+}
