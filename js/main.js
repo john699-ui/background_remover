@@ -65,7 +65,7 @@ window.enableRestore = () => {
     const sizeSelector = document.getElementById('brushSize');
     initRestoreBrush(canvasManual, originalImage, sizeSelector);
 };
-*/
+*//*
 window.enableRestore = () => {
   if (mode !== 'manual') window.activateManualMode();
   
@@ -81,11 +81,30 @@ window.enableRestore = () => {
   }
   canvasManual.style.display = 'block';
   canvasAuto.style.display = 'block'; // show AI canvas underneath
+}; */
+
+window.enableRestore = () => {
+  if (mode !== 'manual') window.activateManualMode();
+
+  // Optional: Clear polygon overlay if using it
+  const canvasPolygon = document.getElementById('canvasPolygon');
+  if (canvasPolygon) canvasPolygon.getContext('2d').clearRect(0, 0, canvasPolygon.width, canvasPolygon.height);
+
+  points = []; // reset polygon path
+  const sizeSelector = document.getElementById('brushSize');
+
+  initRestoreBrush(canvasManual, originalImage, sizeSelector);
+
+  canvasManual.style.display = 'block';
+  canvasAuto.style.display = 'block';
+  if (canvasPolygon) canvasPolygon.style.display = 'none';
 };
+
 window.enablePolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   activateManualErase(canvasManual, ctxManual);
 };
+/*
 window.startPolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   // Disable restore brush listeners
@@ -94,6 +113,25 @@ window.startPolygonErase = () => {
 
   initPolygonErase(canvasManual, () => {
     console.log("✅ Polygon erase completed.");
+  });
+};
+*/
+
+window.startPolygonErase = () => {
+  if (mode !== 'manual') window.activateManualMode();
+
+  disableRestoreBrush(canvasManual); // remove restore brush event listeners
+
+  const canvasPolygon = document.getElementById('canvasPolygon');
+  if (canvasPolygon) {
+    canvasPolygon.getContext('2d').clearRect(0, 0, canvasPolygon.width, canvasPolygon.height);
+    canvasPolygon.style.display = 'block';
+  }
+
+  points = [];
+
+  initPolygonErase(canvasPolygon || canvasManual, canvasManual, () => {
+    console.log("✅ Polygon erase applied");
   });
 };
 window.confirmErase = () => {
