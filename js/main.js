@@ -65,7 +65,7 @@ window.enableRestore = () => {
     const sizeSelector = document.getElementById('brushSize');
     initRestoreBrush(canvasManual, originalImage, sizeSelector);
 };
-*//*
+*/
 window.enableRestore = () => {
   if (mode !== 'manual') window.activateManualMode();
   
@@ -81,8 +81,8 @@ window.enableRestore = () => {
   }
   canvasManual.style.display = 'block';
   canvasAuto.style.display = 'block'; // show AI canvas underneath
-}; */
-
+}; 
+/*
 window.enableRestore = () => {
   if (mode !== 'manual') window.activateManualMode();
 
@@ -99,12 +99,12 @@ window.enableRestore = () => {
   canvasAuto.style.display = 'block';
   if (canvasPolygon) canvasPolygon.style.display = 'none';
 };
-
+*/
 window.enablePolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   activateManualErase(canvasManual, ctxManual);
 };
-/*
+
 window.startPolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
   // Disable restore brush listeners
@@ -115,8 +115,8 @@ window.startPolygonErase = () => {
     console.log("✅ Polygon erase completed.");
   });
 };
-*/
 
+/*
 window.startPolygonErase = () => {
   if (mode !== 'manual') window.activateManualMode();
 
@@ -134,6 +134,7 @@ window.startPolygonErase = () => {
     console.log("✅ Polygon erase applied");
   });
 };
+*/
 window.confirmErase = () => {
   applyErase();
 };
