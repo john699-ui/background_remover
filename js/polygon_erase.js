@@ -131,3 +131,47 @@ function undoLastPoint() {
     drawPolygon();
   }
 }
+//hhhhhhhhhhhhhhhhhhhhh
+let polygonListeners = [];
+
+export function initPolygonErase(canvas, onEraseDone) {
+  ctxManual = canvas.getContext('2d');
+
+  const onPointerDown = e => {
+    const rect = canvas.getBoundingClientRect();
+    const { originX, originY, scale } = getTransform();
+    const x = (e.clientX - rect.left - originX) / scale;
+    const y = (e.clientY - rect.top - originY) / scale;
+
+    points.push([x, y]);
+    drawPolygon();
+  };
+
+  const onKeyDown = e => {
+    if (e.key === 'Enter' && points.length >= 3) {
+      applyErase(canvas);
+      onEraseDone();
+    } else if (e.key === 'Escape') {
+      cancelPolygon();
+    }
+  };
+
+  canvas.addEventListener('pointerdown', onPointerDown);
+  window.addEventListener('keydown', onKeyDown);
+
+  polygonListeners = [
+    ['pointerdown', onPointerDown],
+    ['keydown', onKeyDown],
+  ];
+}
+
+export function disablePolygonErase(canvas) {
+  polygonListeners.forEach(([type, fn]) => {
+    if (type === 'keydown') {
+      window.removeEventListener(type, fn);
+    } else {
+      canvas.removeEventListener(type, fn);
+    }
+  });
+  polygonListeners = [];
+}
