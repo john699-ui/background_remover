@@ -5,9 +5,9 @@ let brushSize = 15;
 let ctxManual = null;
 let canvasManual = null;
 let baseImage = null;
-let restoreListeners = [];
+//let restoreListeners = [];
 
-/*
+
 export function initRestoreBrush(canvas, image, sizeSelector) {
   canvasManual = canvas;
   ctxManual = canvas.getContext('2d');
@@ -22,7 +22,7 @@ export function initRestoreBrush(canvas, image, sizeSelector) {
     brushSize = parseInt(e.target.value);
   });
 }
-*/
+/*
 export function initRestoreBrush(canvas, image, sizeSelector) {
   if (alreadyInitialized) return; // prevent double-binding
   alreadyInitialized = true;
@@ -49,7 +49,7 @@ function onPointerMove(e) {
   if (!isRestoring) return;
   drawBrushStroke(e);
 }
-/*
+*//*
 function drawBrushStroke(e) {
   const rect = canvasManual.getBoundingClientRect();
   const x = (e.clientX - rect.left - window.originX) / window.scale;
