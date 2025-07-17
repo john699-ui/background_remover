@@ -48,7 +48,7 @@ window.runAI = () => {
   mode = 'auto';
   runAI(canvasAuto, originalImage); // ✅ correct usage
   canvasAuto.style.display = 'block';
-  //==canvasManual.style.display = 'none';
+  canvasManual.style.display = 'none';
 };
 /* last
 window.activateManualMode = () => {
