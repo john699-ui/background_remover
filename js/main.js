@@ -12,7 +12,7 @@ let canvasManual = document.getElementById('canvasManual');
 let canvasBG = document.getElementById('canvasBG');
 let imageLoader = document.getElementById('imageLoader');
 let bgLoader = document.getElementById('bgLoader');
-//==let brushSize = document.getElementById('brushSize');
+let brushSize = document.getElementById('brushSize');
 
 let ctxAuto = canvasAuto.getContext('2d');
 let ctxManual = canvasManual.getContext('2d');
@@ -38,7 +38,7 @@ imageLoader.addEventListener('change', e => {
     ctxAuto.drawImage(img, 0, 0);
     ctxManual.drawImage(img, 0, 0);
     originalImage = img;
-    //initRestoreBrush(canvasManual, originalImage, brushSize);
+    initRestoreBrush(canvasManual, originalImage, brushSize);
   };
   img.src = URL.createObjectURL(file);
 });
