@@ -32,7 +32,7 @@ imageLoader.addEventListener('change', e => {
     canvasAuto.width = canvasManual.width = canvasBG.width = img.width;
     canvasAuto.height = canvasManual.height = canvasBG.height = img.height;
     ctxAuto.clearRect(0, 0, img.width, img.height);
-    //==ctxManual.clearRect(0, 0, img.width, img.height);
+    ctxManual.clearRect(0, 0, img.width, img.height);
     ctxBG.clearRect(0, 0, img.width, img.height);
 
     ctxAuto.drawImage(img, 0, 0);
