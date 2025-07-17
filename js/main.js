@@ -50,7 +50,7 @@ window.runAI = () => {
   canvasAuto.style.display = 'block';
   canvasManual.style.display = 'none';
 };
-/* last
+
 window.activateManualMode = () => {
   if (!originalImage) return;
   mode = 'manual';
@@ -60,7 +60,7 @@ window.activateManualMode = () => {
   //ctxManual.drawImage(originalImage, 0, 0);
 };
 
-
+/* last
 window.enableRestore = () => {
   if (mode !== 'manual') window.activateManualMode();
 
