@@ -108,7 +108,7 @@ window.downloadAIResult = () => {
   link.href = tempCanvas.toDataURL(`image/${format}`);
   link.click();
 };
-
+/*
 window.switchToManual = () => {
   mode = 'manual';
   canvasAuto.style.display = 'block';     // Show AI result as reference
@@ -118,4 +118,4 @@ window.switchToManual = () => {
   // Optional: grey out canvasAuto so it's "locked"
   canvasAuto.style.opacity = 0.5;
 };
-
+*/
