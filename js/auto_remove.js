@@ -14,50 +14,7 @@ export async function initONNX() {
     //console.log("ONNX Results:", results);
   }
 }
-/*
-export async function runAI(canvas, image) {
-  const ctx = canvas.getContext('2d');
 
-  // STEP 1: Resize image to 320x320 for ONNX input
-  const resizedCanvas = document.createElement('canvas');
-  resizedCanvas.width = 320;
-  resizedCanvas.height = 320;
-  const rCtx = resizedCanvas.getContext('2d');
-  rCtx.drawImage(image, 0, 0, 320, 320);
-
-  const inputData = getImageTensor(resizedCanvas); // Convert to tensor
-
-  // STEP 2: Run ONNX model
-  await initONNX();
-  console.log("✅ ONNX model initialized successfully");
-  const feeds = { 'input.1': inputData };
-  const results = await session.run(feeds);
-  const firstKey = Object.keys(results)[0];
-  const outputTensor = results[firstKey];
-  const output = outputTensor.data;
-
-  // STEP 3: Resize output mask to original canvas size
-  const maskImage = outputToMaskImage(output, 320, 320);
-  //added// 1. Draw 320x320 mask onto a temp canvas 
-  const tempCanvas = document.createElement('canvas');
-  tempCanvas.width = 320;
-  tempCanvas.height = 320;
-  const tempCtx = tempCanvas.getContext('2d');
-  tempCtx.putImageData(maskImage, 0, 0);
-
-  // 2. Scale it to original canvas size
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(tempCanvas, 0, 0, canvas.width, canvas.height);
-  // added up to this
-  const tmp = document.createElement('canvas');
-  tmp.width = canvas.width;
-  tmp.height = canvas.height;
-  tmp.getContext('2d').putImageData(maskImage, 0, 0);
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(tmp, 0, 0, canvas.width, canvas.height);
-}
-*/
 export async function runAI(canvas, image) {
   const ctx = canvas.getContext('2d');
 
