@@ -38,7 +38,7 @@ imageLoader.addEventListener('change', e => {
     ctxAuto.drawImage(img, 0, 0);
     ctxManual.drawImage(img, 0, 0);
     originalImage = img;
-    initRestoreBrush(canvasManual, originalImage, brushSize);
+    //initRestoreBrush(canvasManual, originalImage, brushSize);
   };
   img.src = URL.createObjectURL(file);
 });
@@ -50,7 +50,7 @@ window.runAI = () => {
   canvasAuto.style.display = 'block';
   canvasManual.style.display = 'none';
 };
-
+/*
 window.activateManualMode = () => {
   if (!originalImage) return;
   mode = 'manual';
@@ -134,7 +134,7 @@ window.quickDownload = () => {
   link.href = tempCanvas.toDataURL(`image/${format}`);
   link.click();
 };
-
+*/
 window.downloadAIResult = () => {
   const format = document.getElementById('downloadFormat').value;
 
