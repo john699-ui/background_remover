@@ -50,7 +50,7 @@ window.runAI = () => {
   canvasAuto.style.display = 'block';
   canvasManual.style.display = 'none';
 };
-
+/* last
 window.activateManualMode = () => {
   if (!originalImage) return;
   mode = 'manual';
@@ -101,7 +101,7 @@ window.confirmErase = () => {
 window.undoPolygon = () => {
   undoLastPoint();
 };
-
+*/
 window.quickDownload = () => {
   const format = document.getElementById('downloadFormat').value;
 
