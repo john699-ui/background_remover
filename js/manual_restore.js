@@ -1,4 +1,5 @@
 // manual_restore.js
+/*
 let alreadyInitialized = false;
 let isRestoring = false;
 let brushSize = 15;
@@ -68,7 +69,7 @@ function drawBrushStroke(e) {
   ctxManual.strokeStyle = 'rgba(0,0,255,0.3)';
   ctxManual.stroke();
 }
-*/
+*//*
 function drawBrushStroke(e) {
   const rect = canvasManual.getBoundingClientRect();
   const x = e.clientX - rect.left;
@@ -100,6 +101,7 @@ export function disableRestoreBrush(canvas) {
   canvas.removeEventListener('pointerleave', () => (isRestoring = false));
    restoreListeners = [];
 }
+*/
 
 //ggggggggggggg
 
