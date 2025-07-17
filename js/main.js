@@ -60,7 +60,7 @@ window.activateManualMode = () => {
   //ctxManual.drawImage(originalImage, 0, 0);
 };
 
-/* last
+
 window.enableRestore = () => {
   if (mode !== 'manual') window.activateManualMode();
 
@@ -101,7 +101,7 @@ window.confirmErase = () => {
 window.undoPolygon = () => {
   undoLastPoint();
 };
-*/
+
 
 window.quickDownload = () => {
   const format = document.getElementById('downloadFormat').value;
