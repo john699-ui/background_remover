@@ -51,56 +51,7 @@ window.runAI = () => {
   canvasManual.style.display = 'none';
 };
 /*
-window.activateManualMode = () => {
-  if (!originalImage) return;
-  mode = 'manual';
-  canvasAuto.style.display = 'none';
-  canvasManual.style.display = 'block';
-  //ctxManual.clearRect(0, 0, canvasManual.width, canvasManual.height);
-  //ctxManual.drawImage(originalImage, 0, 0);
-};
 
-
-window.enableRestore = () => {
-  if (mode !== 'manual') window.activateManualMode();
-
-  disablePolygonErase(canvasManual);
-  const sizeSelector = document.getElementById('brushSize');
-  initRestoreBrush(canvasManual, originalImage, sizeSelector);
-};
-
-window.startPolygonErase = () => {
-  if (mode !== 'manual') window.activateManualMode();
-
-  disableRestoreBrush(canvasManual);
-  initPolygonErase(canvasManual, () => {
-    console.log("✅ Polygon erase applied");
-  });
-};
-
-window.enablePolygonErase = () => {
-  if (mode !== 'manual') window.activateManualMode();
-  activateManualErase(canvasManual, ctxManual);
-};
-
-window.startPolygonErase = () => {
-  if (mode !== 'manual') window.activateManualMode();
-  // Disable restore brush listeners
-  // 🧼 Remove restore brush listeners
-  disableRestoreBrush(canvasManual);
-
-  initPolygonErase(canvasManual, () => {
-    console.log("✅ Polygon erase completed.");
-  });
-};
-
-
-window.confirmErase = () => {
-  applyErase();
-};
-window.undoPolygon = () => {
-  undoLastPoint();
-};
 
 
 window.quickDownload = () => {
