@@ -1,4 +1,5 @@
 // polygon_erase.js
+/* last 
 import { getTransform } from './canvas_sync.js';
 export {applyErase, cancelPolygon, undoLastPoint };
 let points = [];
@@ -60,7 +61,7 @@ function onPointerDown(e) {
   console.log("Point added:", x, y);
   drawPolygon();
 }*/
-
+/* last
 function onPointerDown(e) {
   if (!canvasPolygon) return;
 
@@ -131,4 +132,5 @@ function undoLastPoint() {
     drawPolygon();
   }
 }
+//last*/
 //hhhhhhhhhhhhhhhhhhhhh
