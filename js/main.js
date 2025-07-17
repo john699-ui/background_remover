@@ -8,14 +8,14 @@ import { initBackgroundLayer } from './background_layer.js';
 //import { initRestoreBrush} from './manual_restore.js';
 
 let canvasAuto = document.getElementById('canvasAuto');
-let canvasManual = document.getElementById('canvasManual');
+//==let canvasManual = document.getElementById('canvasManual');
 let canvasBG = document.getElementById('canvasBG');
 let imageLoader = document.getElementById('imageLoader');
 let bgLoader = document.getElementById('bgLoader');
-let brushSize = document.getElementById('brushSize');
+//==let brushSize = document.getElementById('brushSize');
 
 let ctxAuto = canvasAuto.getContext('2d');
-let ctxManual = canvasManual.getContext('2d');
+//==let ctxManual = canvasManual.getContext('2d');
 let ctxBG = canvasBG.getContext('2d');
 
 let originalImage = null;
@@ -32,7 +32,7 @@ imageLoader.addEventListener('change', e => {
     canvasAuto.width = canvasManual.width = canvasBG.width = img.width;
     canvasAuto.height = canvasManual.height = canvasBG.height = img.height;
     ctxAuto.clearRect(0, 0, img.width, img.height);
-    ctxManual.clearRect(0, 0, img.width, img.height);
+    //==ctxManual.clearRect(0, 0, img.width, img.height);
     ctxBG.clearRect(0, 0, img.width, img.height);
 
     ctxAuto.drawImage(img, 0, 0);
@@ -48,7 +48,7 @@ window.runAI = () => {
   mode = 'auto';
   runAI(canvasAuto, originalImage); // ✅ correct usage
   canvasAuto.style.display = 'block';
-  canvasManual.style.display = 'none';
+  //==canvasManual.style.display = 'none';
 };
 /* last
 window.activateManualMode = () => {
@@ -102,6 +102,7 @@ window.undoPolygon = () => {
   undoLastPoint();
 };
 */
+/* == last
 window.quickDownload = () => {
   const format = document.getElementById('downloadFormat').value;
 
@@ -133,7 +134,7 @@ window.quickDownload = () => {
   link.href = tempCanvas.toDataURL(`image/${format}`);
   link.click();
 };
-
+== last*/
 window.downloadAIResult = () => {
   const format = document.getElementById('downloadFormat').value;
 
@@ -156,6 +157,7 @@ window.downloadAIResult = () => {
   link.href = tempCanvas.toDataURL(`image/${format}`);
   link.click();
 };
+/*== last
 window.switchToManual = () => {
   mode = 'manual';
   canvasAuto.style.display = 'block';     // Show AI result as reference
@@ -165,3 +167,4 @@ window.switchToManual = () => {
   // Optional: grey out canvasAuto so it's "locked"
   canvasAuto.style.opacity = 0.5;
 };
+==last*/
