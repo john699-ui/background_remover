@@ -8,14 +8,14 @@ import { initBackgroundLayer } from './background_layer.js';
 //import { initRestoreBrush} from './manual_restore.js';
 
 let canvasAuto = document.getElementById('canvasAuto');
-//==let canvasManual = document.getElementById('canvasManual');
+let canvasManual = document.getElementById('canvasManual');
 let canvasBG = document.getElementById('canvasBG');
 let imageLoader = document.getElementById('imageLoader');
 let bgLoader = document.getElementById('bgLoader');
 //==let brushSize = document.getElementById('brushSize');
 
 let ctxAuto = canvasAuto.getContext('2d');
-//==let ctxManual = canvasManual.getContext('2d');
+let ctxManual = canvasManual.getContext('2d');
 let ctxBG = canvasBG.getContext('2d');
 
 let originalImage = null;
