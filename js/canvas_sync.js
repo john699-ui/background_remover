@@ -54,7 +54,7 @@ export function initCanvasSync(imageMap, ...canvases) {
     });
   });
 }
-
+/* bkup
 export function redrawAll() {
   syncedCanvases.forEach(canvas => {
     const ctx = canvas.getContext('2d');
@@ -64,6 +64,28 @@ export function redrawAll() {
     canvas.width = canvas.width; // reset canvas state
     ctx.setTransform(window.scale, 0, 0, window.scale, window.originX, window.originY);
     ctx.drawImage(image, 0, 0);
+  });
+}*/  
+export function redrawAll() {
+  syncedCanvases.forEach(canvas => {
+    const ctx = canvas.getContext('2d');
+    const image = imageRefs[canvas.id];
+    if (!image) return;
+
+    canvas.width = canvas.width; // reset canvas state
+    ctx.setTransform(window.scale, 0, 0, window.scale, window.originX, window.originY);
+    ctx.drawImage(image, 0, 0);
+    const previewScale = fitCanvasToScreen(loadedImage);
+
+    const canvasBG = document.getElementById('canvasBG');
+    const ctxBG = canvasBG.getContext('2d');
+    // test
+    ctxBG.clearRect(0, 0, canvasBG.width, canvasBG.height);
+    ctxBG.drawImage(loadedImage, 0, 0, canvasBG.width, canvasBG.height);
+    const canvasAuto = document.getElementById('canvasAuto');
+    const ctxAuto = canvasAuto.getContext('2d');
+    ctxAuto.clearRect(0, 0, canvasAuto.width, canvasAuto.height);
+    ctxAuto.drawImage(loadedImage, 0, 0, canvasAuto.width, canvasAuto.height);
   });
 }
 export function getTransform() {
