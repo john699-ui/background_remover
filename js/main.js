@@ -40,7 +40,6 @@ imageLoader.addEventListener('change', e => {
     originalImage = img;
     //initRestoreBrush(canvasManual, originalImage, brushSize);
   };
-  fitCanvasToScreen(image) // added  1907
   img.src = URL.createObjectURL(file);
 });
 
@@ -51,29 +50,6 @@ window.runAI = () => {
   canvasAuto.style.display = 'block';
   canvasManual.style.display = 'none';
 };
-// added  1907
-function fitCanvasToScreen(image) {
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-
-  const scaleW = screenWidth / image.width;
-  const scaleH = screenHeight / image.height;
-
-  const previewScale = Math.min(scaleW, scaleH, 1); // don’t upscale
-
-  const displayWidth = image.width * previewScale;
-  const displayHeight = image.height * previewScale;
-
-  // Resize all relevant canvases
-  ['canvasBG', 'canvasAuto'].forEach(id => {
-    const canvas = document.getElementById(id);
-    canvas.width = displayWidth;
-    canvas.height = displayHeight;
-  });
-
-  return previewScale;
-}
-// added  1907
 /*
 
 
