@@ -29,7 +29,7 @@ imageLoader.addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
   const img = new Image();
-img.onload = () => {
+  img.onload = () => {
   const maxWidth = window.innerWidth - 20;
   const maxHeight = window.innerHeight - 120;
 
