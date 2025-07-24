@@ -52,8 +52,10 @@ imageLoader.addEventListener('change', e => {
     ctxManual.clearRect(0, 0, img.width, img.height);
     ctxBG.clearRect(0, 0, img.width, img.height);
 
-    ctxAuto.drawImage(img, 0, 0);
-    ctxManual.drawImage(img, 0, 0);
+    //ctxAuto.drawImage(img, 0, 0);
+    //ctxManual.drawImage(img, 0, 0);
+    ctxAuto.drawImage(img, 0, 0, img.width * scaleFactor, img.height * scaleFactor);
+    ctxManual.drawImage(img, 0, 0, img.width * scaleFactor, img.height * scaleFactor);
     originalImage = img;
   };
   img.src = URL.createObjectURL(file);
