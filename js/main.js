@@ -57,7 +57,7 @@ imageLoader.addEventListener('change', e => {
     originalImage = img;
   };
   img.src = URL.createObjectURL(file);
-};)
+});
 window.runAI = () => {
   if (!originalImage) return;
   mode = 'auto';
