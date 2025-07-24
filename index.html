@@ -39,6 +39,18 @@
       image-rendering: pixelated;
       touch-action: none;
     }
+    #canvasContainer {
+      position: relative;
+      width: fit-content;
+      margin: auto;
+    }
+    canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+      touch-action: none;
+      image-rendering: pixelated;
+    }
 
     #canvasBG {
       z-index: 0;
@@ -87,12 +99,17 @@
     <button onclick="downloadAIResult()">AI Download</button>
    <!-- <button onclick="quickDownload()">Download</button> -->
   </div>
-
+<!---
   <div id="canvas-container">
     <canvas id="canvasBG"></canvas>
     <canvas id="canvasAuto"></canvas>
    <canvas id="canvasManual" width="800" height="600" style="display:none; position:absolute; top:0; left:0; z-index:2;"></canvas>
-   <!-- <canvas id="canvasPolygon" style="position:absolute; top:0; left:0; z-index:3; pointer-events:none;"></canvas> -->
+   <!-- <canvas id="canvasPolygon" style="position:absolute; top:0; left:0; z-index:3; pointer-events:none;"></canvas> 
+  </div>  -->
+  <div id="canvasContainer">
+    <canvas id="canvasBG"></canvas>
+    <canvas id="canvasAuto"></canvas>
+    <canvas id="canvasManual"></canvas>
   </div>
 
   <!-- AdSense or Affiliate Placeholder -->
