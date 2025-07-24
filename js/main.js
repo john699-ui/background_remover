@@ -56,6 +56,7 @@ imageLoader.addEventListener('change', e => {
     ctxManual.drawImage(img, 0, 0);
     originalImage = img;
   };
+  img.src = URL.createObjectURL(file);
 };
 window.runAI = () => {
   if (!originalImage) return;
