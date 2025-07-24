@@ -20,6 +20,7 @@ let ctxBG = canvasBG.getContext('2d');
 
 let originalImage = null;
 let mode = 'idle';
+let displayScale = 1;
 
 initCanvasSync(canvasAuto, canvasManual, canvasBG);
 initBackgroundLayer(canvasBG, bgLoader);
@@ -29,19 +30,32 @@ imageLoader.addEventListener('change', e => {
   if (!file) return;
   const img = new Image();
   img.onload = () => {
-    canvasAuto.width = canvasManual.width = canvasBG.width = img.width;
-    canvasAuto.height = canvasManual.height = canvasBG.height = img.height;
-    ctxAuto.clearRect(0, 0, img.width, img.height);
-    ctxManual.clearRect(0, 0, img.width, img.height);
-    ctxBG.clearRect(0, 0, img.width, img.height);
+  const maxWidth = window.innerWidth - 20;
+  const maxHeight = window.innerHeight - 120;
 
-    ctxAuto.drawImage(img, 0, 0);
-    ctxManual.drawImage(img, 0, 0);
-    originalImage = img;
-    //initRestoreBrush(canvasManual, originalImage, brushSize);
-  };
-  img.src = URL.createObjectURL(file);
-});
+  const scaleX = maxWidth / img.width;
+  const scaleY = maxHeight / img.height;
+  displayScale = Math.min(1, scaleX, scaleY);
+
+  const displayWidth = img.width * displayScale;
+  const displayHeight = img.height * displayScale;
+
+  // Set actual canvas sizes (full res)
+  canvasAuto.width = canvasManual.width = canvasBG.width = img.width;
+  canvasAuto.height = canvasManual.height = canvasBG.height = img.height;
+
+  // Set visible size to scaled size (CSS only)
+  canvasAuto.style.width = canvasManual.style.width = canvasBG.style.width = `${displayWidth}px`;
+  canvasAuto.style.height = canvasManual.style.height = canvasBG.style.height = `${displayHeight}px`;
+
+  ctxAuto.clearRect(0, 0, img.width, img.height);
+  ctxManual.clearRect(0, 0, img.width, img.height);
+  ctxBG.clearRect(0, 0, img.width, img.height);
+
+  ctxAuto.drawImage(img, 0, 0);
+  ctxManual.drawImage(img, 0, 0);
+  originalImage = img;
+};
 
 window.runAI = () => {
   if (!originalImage) return;
