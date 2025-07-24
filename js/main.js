@@ -56,7 +56,7 @@ imageLoader.addEventListener('change', e => {
   ctxManual.drawImage(img, 0, 0);
   originalImage = img;
 };
-
+};
 window.runAI = () => {
   if (!originalImage) return;
   mode = 'auto';
