@@ -48,6 +48,7 @@ imageLoader.addEventListener('change', e => {
     canvasBG.height = canvasAuto.height = canvasManual.height = img.height;
 
     // Set displayed size using CSS (scales on screen)
+    canvasAuto.style.display = canvasManual.style.display = canvasBG.style.display = 'block';
     canvasBG.style.width = canvasAuto.style.width = canvasManual.style.width = `${displayWidth}px`;
     canvasBG.style.height = canvasAuto.style.height = canvasManual.style.height = `${displayHeight}px`;
 
