@@ -21,6 +21,8 @@ let ctxBG = canvasBG.getContext('2d');
 let originalImage = null;
 let mode = 'idle';
 let displayScale = 1;
+console.log("✅ main called successfully");
+
 
 initCanvasSync(canvasAuto, canvasManual, canvasBG);
 initBackgroundLayer(canvasBG, bgLoader);
