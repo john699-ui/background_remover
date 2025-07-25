@@ -30,6 +30,7 @@ initBackgroundLayer(canvasBG, bgLoader);
 imageLoader.addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
+
   const img = new Image();
   img.onload = () => {
     const maxWidth = window.innerWidth - 20;
@@ -37,29 +38,32 @@ imageLoader.addEventListener('change', e => {
 
     const scaleX = maxWidth / img.width;
     const scaleY = maxHeight / img.height;
-    displayScale = Math.min(1, scaleX, scaleY);
 
+    const displayScale = Math.min(1, scaleX, scaleY);
     const displayWidth = img.width * displayScale;
     const displayHeight = img.height * displayScale;
 
-    // Set actual canvas sizes (full res)
-    canvasAuto.width = canvasManual.width = canvasBG.width = img.width;
-    canvasAuto.height = canvasManual.height = canvasBG.height = img.height;
+    // Set actual canvas sizes to full resolution
+    canvasBG.width = canvasAuto.width = canvasManual.width = img.width;
+    canvasBG.height = canvasAuto.height = canvasManual.height = img.height;
 
-    // Set visible size to scaled size (CSS only)
-    canvasAuto.style.width = canvasManual.style.width = canvasBG.style.width = `${displayWidth}px`;
-    canvasAuto.style.height = canvasManual.style.height = canvasBG.style.height = `${displayHeight}px`;
+    // Set displayed size using CSS (scales on screen)
+    canvasBG.style.width = canvasAuto.style.width = canvasManual.style.width = `${displayWidth}px`;
+    canvasBG.style.height = canvasAuto.style.height = canvasManual.style.height = `${displayHeight}px`;
 
+    // Clear existing drawings
+    ctxBG.clearRect(0, 0, img.width, img.height);
     ctxAuto.clearRect(0, 0, img.width, img.height);
     ctxManual.clearRect(0, 0, img.width, img.height);
-    ctxBG.clearRect(0, 0, img.width, img.height);
 
-    ctxAuto.drawImage(img, 0, 0);
-    ctxManual.drawImage(img, 0, 0);
-    //ctxAuto.drawImage(img, 0, 0, img.width * scaleFactor, img.height * scaleFactor);
-    //ctxManual.drawImage(img, 0, 0, img.width * scaleFactor, img.height * scaleFactor);
-    originalImage = img;
+    // Draw image at full resolution on all layers
+    ctxBG.drawImage(img, 0, 0, img.width, img.height);
+    ctxAuto.drawImage(img, 0, 0, img.width, img.height);
+    ctxManual.drawImage(img, 0, 0, img.width, img.height);
+
+    originalImage = img; // Save for future use if needed
   };
+
   img.src = URL.createObjectURL(file);
 });
 window.runAI = () => {
