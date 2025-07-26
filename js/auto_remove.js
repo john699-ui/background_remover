@@ -80,6 +80,7 @@ export async function runAI(canvas, image) {
     const results = await session.run(feeds);
     const firstKey = Object.keys(results)[0];
     const output = results[firstKey].data;
+    console.log("Output sample:", output.slice(0, 20));
 
     console.log("✅ Inference complete. Output length:", output.length);
 
