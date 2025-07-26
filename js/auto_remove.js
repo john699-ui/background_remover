@@ -107,7 +107,7 @@ function postprocess(output, width, height) {
   }
   return new ImageData(mask, width, height);
 }
-
+/*
 function applyMask(canvas, image, mask) {
   const ctx = canvas.getContext('2d');
   canvas.width = image.width;
@@ -126,4 +126,28 @@ function applyMask(canvas, image, mask) {
   }
 
   ctx.putImageData(imageData, 0, 0);
+}
+*/
+function applyMask(canvas, image, mask) {
+  const ctx = canvas.getContext('2d');
+
+  // ✅ Do NOT change canvas width/height here (keep original resolution)
+  // Keep canvas at image resolution (already set during load)
+
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = image.width;
+  tempCanvas.height = image.height;
+  const tempCtx = tempCanvas.getContext('2d');
+  tempCtx.drawImage(image, 0, 0);
+  const imageData = tempCtx.getImageData(0, 0, image.width, image.height);
+
+  for (let i = 0; i < mask.data.length; i += 4) {
+    imageData.data[i + 3] = 255 - mask.data[i + 3]; // ✅ Apply alpha correctly
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+
+  // ✅ Preserve CSS scaling for preview
+  canvas.style.width = `${image.width * displayScale}px`;
+  canvas.style.height = `${image.height * displayScale}px`;
 }
