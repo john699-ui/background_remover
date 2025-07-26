@@ -21,6 +21,7 @@ let ctxBG = canvasBG.getContext('2d');
 let originalImage = null;
 let mode = 'idle';
 let displayScale = 1;
+window.displayScale = 1; 
 console.log("✅ main called successfully");
 
 
@@ -39,7 +40,8 @@ imageLoader.addEventListener('change', e => {
     const scaleX = maxWidth / img.width;
     const scaleY = maxHeight / img.height;
 
-    const displayScale = Math.min(1, scaleX, scaleY);
+    //const displayScale = Math.min(1, scaleX, scaleY);
+    window.displayScale = Math.min(1, scaleX, scaleY);
     const displayWidth = img.width * displayScale;
     const displayHeight = img.height * displayScale;
 
