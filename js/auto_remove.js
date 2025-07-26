@@ -54,7 +54,8 @@ export async function runAI(canvas, image) {
   const resizedMaskData = maskCtx.getImageData(0, 0, image.width, image.height);
 
   // STEP 5: Apply the alpha mask to original image
-  applyMask(canvas, image, resizedMaskData);
+  //applyMask(canvas, image, resizedMaskData);
+  applyMask(canvas, image, resizedMaskData, displayScale);
 }
 function getImageTensor(canvas) {
   const ctx = canvas.getContext('2d');
@@ -128,7 +129,7 @@ function applyMask(canvas, image, mask) {
   ctx.putImageData(imageData, 0, 0);
 }
 */
-function applyMask(canvas, image, mask) {
+function applyMask(canvas, image, mask,displayScale) {
   const ctx = canvas.getContext('2d');
 
   // ✅ Do NOT change canvas width/height here (keep original resolution)
