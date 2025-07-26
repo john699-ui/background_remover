@@ -14,7 +14,7 @@ export async function initONNX() {
     //console.log("ONNX Results:", results);
   }
 }
-
+/*
 export async function runAI(canvas, image) {
   const ctx = canvas.getContext('2d');
 
@@ -57,6 +57,59 @@ export async function runAI(canvas, image) {
   //applyMask(canvas, image, resizedMaskData);
   applyMask(canvas, image, resizedMaskData, displayScale);
   console.log("Mask alpha sample:", mask.data.slice(0, 20));
+}
+*/
+export async function runAI(canvas, image) {
+  try {
+    const ctx = canvas.getContext('2d');
+
+    // STEP 1: Resize image to 320x320 for ONNX input
+    const resizedCanvas = document.createElement('canvas');
+    resizedCanvas.width = 320;
+    resizedCanvas.height = 320;
+    const rCtx = resizedCanvas.getContext('2d');
+    rCtx.drawImage(image, 0, 0, 320, 320);
+
+    const inputData = getImageTensor(resizedCanvas);
+
+    // STEP 2: Run ONNX model
+    await initONNX();
+    console.log("✅ ONNX model initialized successfully");
+
+    const feeds = { 'input.1': inputData };
+    const results = await session.run(feeds);
+    const firstKey = Object.keys(results)[0];
+    const output = results[firstKey].data;
+
+    console.log("✅ Inference complete. Output length:", output.length);
+
+    // STEP 3: Convert 320x320 output mask to ImageData
+    const smallMaskImage = outputToMaskImage(output, 320, 320);
+    console.log("✅ Small mask generated:", smallMaskImage);
+
+    // STEP 4: Resize mask to match original image
+    const maskCanvas = document.createElement('canvas');
+    maskCanvas.width = image.width;
+    maskCanvas.height = image.height;
+    const maskCtx = maskCanvas.getContext('2d');
+
+    const tmpCanvas = document.createElement('canvas');
+    tmpCanvas.width = 320;
+    tmpCanvas.height = 320;
+    tmpCanvas.getContext('2d').putImageData(smallMaskImage, 0, 0);
+
+    maskCtx.drawImage(tmpCanvas, 0, 0, image.width, image.height);
+    const resizedMaskData = maskCtx.getImageData(0, 0, image.width, image.height);
+
+    console.log("✅ Resized mask ready:", resizedMaskData);
+
+    // STEP 5: Apply the alpha mask to original image
+    applyMask(canvas, image, resizedMaskData);
+    console.log("Mask alpha sample:", resizedMaskData.data.slice(0, 20));
+    console.log("✅ Mask applied successfully");
+  } catch (err) {
+    console.error("❌ Error in runAI:", err);
+  }
 }
 function getImageTensor(canvas) {
   const ctx = canvas.getContext('2d');
@@ -130,7 +183,7 @@ function applyMask(canvas, image, mask) {
   ctx.putImageData(imageData, 0, 0);
 }
 */
-function applyMask(canvas, image, mask,displayScale) {
+function applyMask(canvas, image, mask){
   const ctx = canvas.getContext('2d');
 
   // ✅ Do NOT change canvas width/height here (keep original resolution)
