@@ -8,7 +8,7 @@
     imageData.data[i * 4 + 3] = 255 - value;
   }
   return imageData;
-}*/
+}
 export function outputToMaskImage(output, width, height) {
   const mask = new Uint8ClampedArray(width * height * 4);
   for (let i = 0; i < width * height; i++) {
@@ -17,6 +17,30 @@ export function outputToMaskImage(output, width, height) {
     mask[i * 4 + 1] = 0; // G
     mask[i * 4 + 2] = 0; // B
     mask[i * 4 + 3] = val; // Alpha based on ONNX output
+  }
+  return new ImageData(mask, width, height);
+}
+*/
+export function outputToMaskImage(output, width, height) {
+  const mask = new Uint8ClampedArray(width * height * 4);
+
+  // Find min and max in output for normalization
+  let minVal = Infinity;
+  let maxVal = -Infinity;
+  for (let i = 0; i < output.length; i++) {
+    if (output[i] < minVal) minVal = output[i];
+    if (output[i] > maxVal) maxVal = output[i];
+  }
+  const range = maxVal - minVal || 1; // Avoid division by zero
+
+  for (let i = 0; i < width * height; i++) {
+    // Normalize to 0-1
+    const normVal = (output[i] - minVal) / range;
+    const alpha = normVal * 255; // Scale to 0-255
+    mask[i * 4] = 0;
+    mask[i * 4 + 1] = 0;
+    mask[i * 4 + 2] = 0;
+    mask[i * 4 + 3] = alpha;
   }
   return new ImageData(mask, width, height);
 }
