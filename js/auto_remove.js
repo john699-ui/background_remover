@@ -56,7 +56,7 @@ export async function runAI(canvas, image) {
   // STEP 5: Apply the alpha mask to original image
   //applyMask(canvas, image, resizedMaskData);
   applyMask(canvas, image, resizedMaskData, displayScale);
-  console.log("Mask alpha sample:", mask.data.slice(0, 20));
+  console.log("Mask alpha sample:", resizedMaskData.data.slice(0, 20));
 }
 */
 export async function runAI(canvas, image) {
