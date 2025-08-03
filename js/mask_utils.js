@@ -74,7 +74,8 @@ export function outputToMaskImage(output, width, height) {
 export function outputToMaskImage(output, width, height) {
   const imageData = new ImageData(width, height);
   for (let i = 0; i < output.length; i++) {
-    const alpha = Math.min(255, Math.max(0, output[i] * 255)); // Smooth mask
+    //const alpha = Math.min(255, Math.max(0, output[i] * 255)); // Smooth mask
+    const alpha = Math.min(255, Math.max(0, (output[i] ** 0.5) * 255)); // Brighter midtones
     const idx = i * 4;
     imageData.data[idx] = 0;     // R
     imageData.data[idx + 1] = 0; // G
