@@ -45,7 +45,7 @@ export function outputToMaskImage(output, width, height) {
   return new ImageData(mask, width, height);
 }
 */
-function outputToMaskImage(output, width, height) {
+export function outputToMaskImage(output, width, height) {
   const data = new Uint8ClampedArray(width * height * 4);
   for (let i = 0; i < width * height; i++) {
     const val = output[i]; // 0.0 to 1.0 usually
