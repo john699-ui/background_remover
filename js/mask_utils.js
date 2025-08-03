@@ -58,7 +58,7 @@ export function outputToMaskImage(output, width, height) {
   }
   return new ImageData(data, width, height);
 }*/
-function outputToMaskImage(output, width, height) {
+export function outputToMaskImage(output, width, height) {
   const imageData = new ImageData(width, height);
   for (let i = 0; i < output.length; i++) {
     const alpha = output[i] > 0.05 ? 255 : 0; // Threshold: tweakable
