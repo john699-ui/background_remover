@@ -57,7 +57,7 @@ export function outputToMaskImage(output, width, height) {
     data[i * 4 + 3] = alpha; // A
   }
   return new ImageData(data, width, height);
-}*/
+}
 export function outputToMaskImage(output, width, height) {
   const imageData = new ImageData(width, height);
   for (let i = 0; i < output.length; i++) {
@@ -67,6 +67,19 @@ export function outputToMaskImage(output, width, height) {
     imageData.data[idx + 1] = 0; // G
     imageData.data[idx + 2] = 0; // B
     imageData.data[idx + 3] = alpha; // Alpha from mask
+  }
+  return imageData;
+} */
+
+export function outputToMaskImage(output, width, height) {
+  const imageData = new ImageData(width, height);
+  for (let i = 0; i < output.length; i++) {
+    const alpha = Math.min(255, Math.max(0, output[i] * 255)); // Smooth mask
+    const idx = i * 4;
+    imageData.data[idx] = 0;     // R
+    imageData.data[idx + 1] = 0; // G
+    imageData.data[idx + 2] = 0; // B
+    imageData.data[idx + 3] = alpha; // Scaled alpha
   }
   return imageData;
 }
