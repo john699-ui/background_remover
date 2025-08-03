@@ -80,6 +80,13 @@ export async function runAI(canvas, image) {
     const results = await session.run(feeds);
     const firstKey = Object.keys(results)[0];
     const output = results[firstKey].data;
+    // Inspect the output values
+    let max = -Infinity, min = Infinity;
+    for (let i = 0; i < output.length; i++) {
+      if (output[i] > max) max = output[i];
+      if (output[i] < min) min = output[i];
+    }
+    console.log("🔍 ONNX output range: min =", min, ", max =", max);
     console.log("Output sample:", output.slice(0, 20));
 
     console.log("✅ Inference complete. Output length:", output.length);
