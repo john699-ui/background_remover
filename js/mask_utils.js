@@ -69,7 +69,7 @@ export function outputToMaskImage(output, width, height) {
     imageData.data[idx + 3] = alpha; // Alpha from mask
   }
   return imageData;
-} */
+} 
 
 export function outputToMaskImage(output, width, height) {
   const imageData = new ImageData(width, height);
@@ -84,3 +84,20 @@ export function outputToMaskImage(output, width, height) {
   }
   return imageData;
 }
+
+export function outputToMaskImage(outputData, threshold = 0.5) {
+  const size = 320 * 320;
+  const maskData = new Uint8ClampedArray(size * 4);
+
+  for (let i = 0; i < size; i++) {
+    const val = outputData[i];
+    const alpha = val > threshold ? 255 : 0;
+    maskData[i * 4 + 0] = 0;   // R
+    maskData[i * 4 + 1] = 0;   // G
+    maskData[i * 4 + 2] = 0;   // B
+    maskData[i * 4 + 3] = alpha; // A
+  }
+
+  return new ImageData(maskData, 320, 320);
+}
+*/
