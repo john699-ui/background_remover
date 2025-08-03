@@ -20,7 +20,7 @@ export function outputToMaskImage(output, width, height) {
   }
   return new ImageData(mask, width, height);
 }
-*/
+
 export function outputToMaskImage(output, width, height) {
   const mask = new Uint8ClampedArray(width * height * 4);
 
@@ -43,4 +43,18 @@ export function outputToMaskImage(output, width, height) {
     mask[i * 4 + 3] = alpha;
   }
   return new ImageData(mask, width, height);
+}
+*/
+function outputToMaskImage(output, width, height) {
+  const data = new Uint8ClampedArray(width * height * 4);
+  for (let i = 0; i < width * height; i++) {
+    const val = output[i]; // 0.0 to 1.0 usually
+    const alpha = val > 0.2 ? 255 : 0; // ← This threshold might be too harsh!
+
+    data[i * 4 + 0] = 0;     // R
+    data[i * 4 + 1] = 0;     // G
+    data[i * 4 + 2] = 0;     // B
+    data[i * 4 + 3] = alpha; // A
+  }
+  return new ImageData(data, width, height);
 }
