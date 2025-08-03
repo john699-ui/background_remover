@@ -215,3 +215,98 @@ function applyMask(canvas, image, mask){
   canvas.style.width = `${image.width * displayScale}px`;
   canvas.style.height = `${image.height * displayScale}px`;
 }
+
+//---------------
+
+function prepareInputCanvas(img) {
+  const inputSize = 320;
+  const canvas = document.createElement('canvas');
+  canvas.width = inputSize;
+  canvas.height = inputSize;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, inputSize, inputSize);
+
+  const ratio = img.width / img.height;
+  let drawW, drawH;
+  if (ratio > 1) {
+    drawW = inputSize;
+    drawH = Math.round(inputSize / ratio);
+  } else {
+    drawH = inputSize;
+    drawW = Math.round(inputSize * ratio);
+  }
+
+  const dx = Math.round((inputSize - drawW) / 2);
+  const dy = Math.round((inputSize - drawH) / 2);
+  ctx.drawImage(img, dx, dy, drawW, drawH);
+
+  return { canvas, dx, dy, drawW, drawH };
+}
+
+// Step 2: Convert canvas to ONNX input tensor
+function getImageTensor(canvas) {
+  const ctx = canvas.getContext('2d');
+  const imageData = ctx.getImageData(0, 0, 320, 320);
+  const { data } = imageData;
+  const tensorData = new Float32Array(1 * 3 * 320 * 320);
+
+  for (let i = 0; i < 320 * 320; i++) {
+    tensorData[i] = data[i * 4] / 255;
+    tensorData[i + 320 * 320] = data[i * 4 + 1] / 255;
+    tensorData[i + 2 * 320 * 320] = data[i * 4 + 2] / 255;
+  }
+
+  return new ort.Tensor('float32', tensorData, [1, 3, 320, 320]);
+}
+
+// Step 3: Convert ONNX output tensor to mask image data
+function outputToMaskImage(outputData, threshold = 0.5) {
+  const size = 320 * 320;
+  const maskData = new Uint8ClampedArray(size * 4);
+
+  for (let i = 0; i < size; i++) {
+    const val = outputData[i];
+    const alpha = val > threshold ? 255 : 0;
+    maskData[i * 4 + 0] = 0;   // R
+    maskData[i * 4 + 1] = 0;   // G
+    maskData[i * 4 + 2] = 0;   // B
+    maskData[i * 4 + 3] = alpha; // A
+  }
+
+  return new ImageData(maskData, 320, 320);
+}
+
+// Step 4: Resize mask image data back to original dimensions
+function resizeMaskToOriginal(maskImageData, originalWidth, originalHeight) {
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = 320;
+  tempCanvas.height = 320;
+  const tempCtx = tempCanvas.getContext('2d');
+  tempCtx.putImageData(maskImageData, 0, 0);
+
+  const resizedCanvas = document.createElement('canvas');
+  resizedCanvas.width = originalWidth;
+  resizedCanvas.height = originalHeight;
+  const resizedCtx = resizedCanvas.getContext('2d');
+  resizedCtx.drawImage(tempCanvas, 0, 0, originalWidth, originalHeight);
+
+  return resizedCtx.getImageData(0, 0, originalWidth, originalHeight);
+}
+
+// Step 5: Apply the resized mask as alpha transparency on original image
+function applyMaskToCanvas(originalImg, maskImageData, canvas) {
+  const ctx = canvas.getContext('2d');
+  canvas.width = originalImg.width;
+  canvas.height = originalImg.height;
+
+  ctx.drawImage(originalImg, 0, 0);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+  for (let i = 0; i < maskImageData.data.length; i += 4) {
+    imageData.data[i + 3] = maskImageData.data[i + 3]; // Replace alpha
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+}
