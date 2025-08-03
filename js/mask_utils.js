@@ -1,4 +1,4 @@
-po/*export function outputToMaskImage(output, width, height) {
+/*export function outputToMaskImage(output, width, height) {
   const imageData = new ImageData(width, height);
   for (let i = 0; i < width * height; i++) {
     const value = output[i] * 255;
