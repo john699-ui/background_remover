@@ -2,119 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Background Remover Tool</title>
-
-  <!-- ONNX Runtime -->
-  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
-
-  <style>
-    body { margin: 0; font-family: sans-serif; }
-    #toolbar {
-      padding: 10px;
-      background: #f3f3f3;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    #canvas-container {
-      position: relative;
-      width: 100%;
-      height: 90vh;  /* ✅ force it to take space */
-      max-height: 90vh;
-      overflow: hidden;
-      background: #ddd;
-      touch-action: none;
-    }
-
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-      max-width: 100%;
-      max-height: 100%;
-      z-index: 1;
-      image-rendering: pixelated;
-      touch-action: none;
-    }
-    
-
-    #canvasBG {
-      z-index: 0;
-    }
-    #canvasAuto {
-      z-index: 1;
-    }
-    #canvasManual {
-      z-index: 2;
-      display: none;
-    }
-    #ad-banner {
-      width: 100%;
-      text-align: center;
-      padding: 8px;
-      background: #f0f0f0;
-      border-top: 1px solid #ccc;
-      font-size: 0.9em;
-    }
-  
-
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Background Remover</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div id="toolbar">
-    <input type="file" id="imageLoader" accept="image/*" />
-    <input type="file" id="bgLoader" accept="image/*" />
-    <button onclick="runAI()">Auto Remove</button>
-   <!-- <button onclick="switchToManual()">Manual Edit</button> -->
-   <!-- <button onclick="enableRestore()">Restore Brush</button> -->
-   <!-- <button onclick="startPolygonErase()">Polygon Erase</button> -->
-    <!--<button onclick="undoPolygon()">Undo</button> -->
-   <!---<button onclick="confirmErase()">Confirm Erase</button> -->
+  <div class="container">
+    <h1>AI Background Remover</h1>
 
-   <!-- <select id="brushSize">
-      <option value="5">Brush: Small</option>
-      <option value="15">Medium</option>
-      <option value="30">Large</option>  
-    </select>  --->
+    <input type="file" id="imageInput" accept="image/*" />
 
-    <select id="downloadFormat">
-      <option value="png">PNG</option>
-      <option value="jpeg">JPG</option>
-    </select>
-    <button onclick="downloadAIResult()">AI Download</button>
-   <!-- <button onclick="quickDownload()">Download</button> -->
-  </div>
-  
-  <div id="canvas-container">
-    <canvas id="canvasBG"></canvas>
-    <canvas id="canvasAuto"></canvas>
-   <canvas id="canvasManual" width="800" height="600" style="display:none; position:absolute; top:0; left:0; z-index:2;"></canvas>
-  </div>  
-<!---
-  <div id="canvas-container">
-    <canvas id="canvasBG"></canvas>
-    <canvas id="canvasAuto"></canvas>
-    <canvas id="canvasManual"></canvas>
-  </div>
-   --->
-  <!-- AdSense or Affiliate Placeholder -->
-  <div id="ad-banner">
-    <em>Your Ad / Affiliate Banner</em>
+    <div class="canvas-wrapper">
+      <canvas id="canvasBG"></canvas>
+      <canvas id="canvasAuto"></canvas>
+    </div>
+
+    <div class="controls">
+      <button id="btnRemove">Auto Remove Background</button>
+      <button id="btnDownload">Download Result</button>
+    </div>
   </div>
 
-  <!-- Main Script -->
-    <script type="module" src="js/main.js"></script>
+  <script src="imageLoader.js"></script>
+  <script src="autoRemove.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
 
- <!-- Scripts 
-   <script type="module" src="js/main.js"></script>
-</body>
-</html> -->
