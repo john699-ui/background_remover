@@ -4,7 +4,7 @@ export function loadImage(file, bgCanvas) {
         const ctx = bgCanvas.getContext("2d");
         const img = new Image();
         img.onload = () => {
-            // Scale to fit screen but keep original in memory
+            // Scale for display only
             const maxDisplayWidth = window.innerWidth * 0.9;
             const maxDisplayHeight = window.innerHeight * 0.6;
             let scale = Math.min(maxDisplayWidth / img.width, maxDisplayHeight / img.height, 1);
