@@ -1,6 +1,6 @@
 // autoRemove.js
 export async function autoRemoveBackground(img) {
-    const modelPath = "model/u2netp.onnx"; // adjust path if needed
+    const modelPath = "./u2netp.onnx"; // adjust path if needed
 
     // Load model once
     if (!window.u2netSession) {
