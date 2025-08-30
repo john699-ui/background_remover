@@ -1,37 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Background Remover</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Background Remover</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <h2>AI Background Remover</h2>
 
-  <div class="container">
-    <h1>AI Background Remover</h1>
+  <input type="file" id="fileInput" accept="image/*">
 
-    <input type="file" id="imageInput" accept="image/*" />
-
-    <div class="canvas-wrapper">
-      <!--<canvas id="canvasBG"></canvas> -->
-      <canvas id="canvasBG" style="border:1px solid #ccc;"></canvas>
-      <canvas id="canvasAuto"></canvas>
-    </div>
-
-    <div class="controls">
-      <button id="btnRemove">Auto Remove Background</button>
-      <button id="btnDownload">Download Result</button>
-    </div>
+  <div class="canvas-container">
+    <canvas id="canvasAuto"></canvas>
+    <canvas id="canvasBG"></canvas>
   </div>
 
-  <!-- ONNX Runtime -->
-  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
-
-  <!-- Main script as module -->
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
+
 
 
 
