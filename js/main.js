@@ -12,7 +12,10 @@ let imageScale = 1;
 document.getElementById("imageInput").addEventListener("change", async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    console.log("Selected file:", file);
+
     const { img, scale } = await loadImage(file, canvasBG);
+    console.log("Image loaded:", img.width, img.height, "scale:", scale);
     loadedImage = img;
     imageScale = scale;
 
@@ -36,3 +39,4 @@ document.getElementById("btnDownload").addEventListener("click", () => {
     link.href = canvasAuto.toDataURL("image/png");
     link.click();
 });
+
