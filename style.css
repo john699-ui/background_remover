@@ -1,56 +1,29 @@
 body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f2f2f2;
-}
-
-.container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
+  font-family: Arial, sans-serif;
   text-align: center;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 20px;
 }
 
-input[type="file"] {
-  margin: 20px 0;
+h2 {
+  margin-bottom: 20px;
 }
 
-.canvas-wrapper {
-  position: relative;
-  display: inline-block;
-  max-width: 100%;
-  min-height: 200px; /* 🔧 ensures space is visible */
-  overflow: auto;
+input {
+  margin-bottom: 20px;
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 canvas {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-#canvasBG {
-  z-index: 0;
-}
-
-#canvasAuto {
-  z-index: 1;
-  pointer-events: none;
-}
-
-.controls {
-  margin-top: 20px;
-}
-
-button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
+  border: 1px solid #333;
+  max-width: 90vw;
+  max-height: 70vh;
 }
 
 
