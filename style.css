@@ -20,6 +20,7 @@ input[type="file"] {
   position: relative;
   display: inline-block;
   max-width: 100%;
+  min-height: 200px; /* 🔧 ensures space is visible */
   overflow: auto;
 }
 
@@ -51,4 +52,5 @@ button {
   font-size: 1rem;
   cursor: pointer;
 }
+
 
