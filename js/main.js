@@ -1,4 +1,5 @@
 // main.js
+/*
 import { loadImage } from './imageLoader.js';
 import { autoRemoveBackground } from './autoRemove.js';
 
@@ -38,5 +39,28 @@ document.getElementById("btnDownload").addEventListener("click", () => {
     link.download = "background_removed.png";
     link.href = canvasAuto.toDataURL("image/png");
     link.click();
+});
+*/
+import { loadImage } from "./imageLoader.js";
+import { initModel, removeBackground } from "./backgroundRemover.js";
+
+const fileInput = document.getElementById("fileInput");
+const canvasAuto = document.getElementById("canvasAuto");
+
+let currentImg = null;
+let currentScale = 1;
+
+fileInput.addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // Load image into canvasAuto
+  const { img, scale } = await loadImage(file, canvasAuto);
+  currentImg = img;
+  currentScale = scale;
+
+  // Init model and remove background
+  await initModel();
+  await removeBackground(currentImg, currentScale, canvasAuto);
 });
 
